@@ -217,7 +217,7 @@ def _inyectar_estilos_auth() -> None:
                 line-height: 1.62;
                 color: #94a3b8;
                 margin: 0 0 24px 0;
-                max-width: 620px;
+                max-width: 660px;
             }
 
             /* Cuadrícula 2x2 simétrica con iconos SVG de trazo fino */
@@ -507,8 +507,8 @@ def _render_panel_marca() -> None:
             <span class="sl-hero-accent">con claridad y control.</span>
         </div>
         <p class="sl-hero-copy">
-            Centraliza tu cartera real y simulada, monitoriza objetivos en el mercado español
-            y recibe alertas automáticas por correo cuando tus valores alcancen niveles clave.
+            Centraliza tu cartera real y simulada, sigue tus objetivos en el mercado español
+            y recibe alertas automáticas por correo en tus niveles clave.
         </p>
         <div class="sl-feat-grid">
             <div class="sl-feat-card">
