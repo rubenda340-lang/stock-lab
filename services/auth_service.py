@@ -403,7 +403,8 @@ def get_google_oauth_url() -> str:
 
     digest = hashlib.sha256(verifier.encode("ascii")).digest()
     challenge = base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
-    redirect_url = f"{get_app_public_url()}/?oauth_s={state_id}"
+    # Usar Site URL exacta sin query params extra (evita que Supabase los elimine en el callback)
+    redirect_url = get_app_public_url()
 
     params = urlencode({
         "provider": "google",
@@ -414,35 +415,50 @@ def get_google_oauth_url() -> str:
     return f"{base}/auth/v1/authorize?{params}"
 
 
-def complete_oauth_from_pkce_code(auth_code: str, state_id: str) -> tuple[bool, str]:
+def complete_oauth_from_pkce_code(auth_code: str, state_id: str = "") -> tuple[bool, str]:
     """Intercambia un código PKCE (`?code=...`) servidor-a-servidor contra Supabase."""
-    if not is_cloud_auth_enabled() or not auth_code or not state_id:
+    if not is_cloud_auth_enabled() or not auth_code:
         return False, "Parámetros de autorización OAuth incompletos."
 
     store = _get_pkce_store()
     _limpiar_pkce_expirados(store)
-    entry = store.pop(state_id, None)
-    if not entry:
+
+    # Ordenar candidatos: primero state_id exacto (si llegó), luego los más recientes
+    candidatos: list[tuple[str, str]] = []
+    if state_id and state_id in store:
+        candidatos.append((state_id, store[state_id][0]))
+    for sid, (ver, _exp) in sorted(store.items(), key=lambda kv: kv[1][1], reverse=True):
+        if sid != state_id:
+            candidatos.append((sid, ver))
+
+    if not candidatos:
         return False, "La solicitud de acceso con Google ha expirado. Vuelve a pulsar «Continuar con Google»."
 
-    verifier, _ = entry
-    try:
-        resp = requests.post(
-            f"{get_supabase_url()}/auth/v1/token?grant_type=pkce",
-            headers=_auth_headers(),
-            json={"auth_code": auth_code, "code_verifier": verifier},
-            timeout=_HTTP_TIMEOUT,
-        )
-        data = resp.json() if resp.content else {}
-        if resp.status_code == 200:
-            sesion = _construir_sesion_usuario(data)
-            if sesion:
-                _guardar_sesion_en_estado(sesion)
-                return True, "Sesión iniciada con Google."
-            return False, "Respuesta de sesión incompleta tras validar con Google."
-        return False, _traducir_error_auth(data, "No se pudo completar el acceso con Google.")
-    except requests.RequestException:
-        return False, "Error de conexión al validar el acceso con Google."
+    ultimo_error = "No se pudo completar el acceso con Google."
+    for sid, verifier in candidatos[:8]:
+        try:
+            resp = requests.post(
+                f"{get_supabase_url()}/auth/v1/token?grant_type=pkce",
+                headers=_auth_headers(),
+                json={"auth_code": auth_code, "code_verifier": verifier},
+                timeout=_HTTP_TIMEOUT,
+            )
+            data = resp.json() if resp.content else {}
+            if resp.status_code == 200:
+                store.pop(sid, None)
+                sesion = _construir_sesion_usuario(data)
+                if sesion:
+                    _guardar_sesion_en_estado(sesion)
+                    return True, "Sesión iniciada con Google."
+                return False, "Respuesta de sesión incompleta tras validar con Google."
+            ultimo_error = _traducir_error_auth(data, ultimo_error)
+            # Si el código ya no existe/expiró, no seguir probando
+            if resp.status_code == 404:
+                break
+        except requests.RequestException:
+            return False, "Error de conexión al validar el acceso con Google."
+
+    return False, ultimo_error
 
 
 def complete_oauth_from_tokens(access_token: str, refresh_token: str = "", expires_in: int = 3600) -> tuple[bool, str]:

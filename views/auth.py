@@ -32,8 +32,8 @@ def _procesar_callback_oauth() -> None:
 
     # 1. Callback PKCE (compatible con iframe de Streamlit Community Cloud)
     pkce_code = qp.get("code")
-    oauth_s = qp.get("oauth_s")
-    if pkce_code and oauth_s:
+    oauth_s = qp.get("oauth_s") or ""
+    if pkce_code:
         try:
             for k in ("code", "oauth_s", "error", "error_description"):
                 if k in st.query_params:
