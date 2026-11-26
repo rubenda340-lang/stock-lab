@@ -341,7 +341,8 @@ def _enviar_resend(api_key: str, from_email: str, to_email: str, subject: str, h
         },
         timeout=_HTTP_TIMEOUT,
     )
-    resp.raise_for_status()
+    if not resp.ok:
+        raise RuntimeError(f"Resend HTTP {resp.status_code}: {resp.text[:300]}")
 
 
 def main() -> int:
@@ -349,12 +350,13 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="Evalúa y muestra avisos sin enviar correos ni escribir log")
     parser.add_argument("--force", action="store_true", help="Ignora la ventana de horario BME (útil para pruebas)")
     parser.add_argument("--resumen-diario", action="store_true", help="Envía resumen diario al cierre BME")
+    parser.add_argument("--test-email", action="store_true", help="Envía un correo de prueba de conectividad a los usuarios activos sin escribir en el log anti-spam")
     args = parser.parse_args()
 
     ahora_mad = dt.datetime.now(_MADRID_TZ)
     hoy_iso = ahora_mad.date().isoformat()
 
-    if not args.force and not args.resumen_diario and not _en_horario_bme(ahora_mad):
+    if not args.force and not args.resumen_diario and not args.test_email and not _en_horario_bme(ahora_mad):
         print(f"[SKIP] Fuera de horario BME ({ahora_mad.strftime('%Y-%m-%d %H:%M %Z')}).")
         return 0
 
@@ -411,7 +413,22 @@ def main() -> int:
         wl_u = [w for w in all_wl if w.get("user_id") == uid]
         cart_u = [c for c in all_cart if c.get("user_id") == uid]
 
-        if args.resumen_diario:
+        if args.test_email:
+            avisos_test = [{
+                "ticker": "TEST",
+                "tipo_alerta": "test",
+                "bloque": "Prueba de Conexión · Sistema Activo",
+                "nivel": "positiva",
+                "titulo": "Alertas automáticas de StockLab conectadas correctamente",
+                "detalle": (
+                    f"Tu motor 24/7 está operativo en la nube. "
+                    f"Actualmente vigilando {len(wl_u)} valor(es) en Watchlist y {len(_calcular_posiciones_abiertas_usuario(cart_u))} posición(es) abierta(s) en cartera."
+                ),
+            }]
+            subject = f"StockLab · Confirmación de alertas activas ({hoy_iso})"
+            html_body = _render_email_html(prof.get("full_name", ""), avisos_test, app_url, es_resumen=False)
+            log_rows = []
+        elif args.resumen_diario:
             if not pref.get("resumen_diario"):
                 continue
             if (uid, "RESUMEN", "resumen_diario") in enviados_set:

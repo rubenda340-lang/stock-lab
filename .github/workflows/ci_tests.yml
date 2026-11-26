@@ -25,5 +25,10 @@ jobs:
       - name: Compilar todos los módulos Python
         run: python -m compileall -q app.py market_data.py enviar_alertas.py views services database components utils scripts
 
-      - name: Ejecutar tests de contratos críticos
-        run: python -m unittest tests.test_c26_congelado_fase1 tests.test_higiene_predicciones
+      - name: Ejecutar tests de contratos críticos (BD sintética)
+        run: >
+          python -m unittest
+          tests.test_higiene_predicciones
+          tests.test_c26_congelado_fase1.TestC26CongeladoFase1.test_a_invarianza_total_frente_al_historial_predicciones
+          tests.test_c26_congelado_fase1.TestC26CongeladoFase1.test_b_consistencia_de_firmas_defaults_y_verificar_estado
+          tests.test_c26_congelado_fase1.TestC26CongeladoFase1.test_d_guarda_activa_fase_1_bloquea_intento_calibracion_explicita
