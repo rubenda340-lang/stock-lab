@@ -527,13 +527,19 @@ def show():
         box-shadow: 0 0 16px -4px rgba(56, 189, 248, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
     }
 
-    /* Align segmented controls inside headers flush-right on a single crisp row */
+    /* Align segmented controls inside headers flush-right on a single crisp row (Streamlit 1.58 stButtonGroup) */
+    .st-key-periodo_ibex_dashboard,
+    .st-key-dash_filtro_alertas,
+    div[data-testid="stElementContainer"]:has(div[data-testid="stButtonGroup"]),
     div[data-testid="stElementContainer"]:has(div[data-testid="stSegmentedControl"]),
     div[data-testid="stSegmentedControl"] {
         display: flex !important;
         justify-content: flex-end !important;
         width: 100% !important;
     }
+    .st-key-periodo_ibex_dashboard > div,
+    .st-key-dash_filtro_alertas > div,
+    div[data-testid="stButtonGroup"],
     div[data-testid="stSegmentedControl"] > div,
     div[data-testid="stSegmentedControl"] [data-baseweb="button-group"] {
         display: flex !important;

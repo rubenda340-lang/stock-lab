@@ -77,6 +77,16 @@ def mostrar_modal_cuenta() -> None:
                 border-color: rgba(248, 113, 113, 0.62) !important;
                 color: #fecaca !important;
             }
+            div[data-testid="stDialog"] div[data-testid="stCheckbox"] label,
+            div[data-testid="stDialog"] div[data-testid="stCheckbox"] label p,
+            div[data-testid="stDialog"] div[data-testid="stToggle"] label,
+            div[data-testid="stDialog"] div[data-testid="stToggle"] label p {
+                text-transform: none !important;
+                letter-spacing: 0 !important;
+                font-size: 0.86rem !important;
+                font-weight: 500 !important;
+                color: #e2e8f0 !important;
+            }
         </style>
         """,
         unsafe_allow_html=True,
