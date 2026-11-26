@@ -1,0 +1,20 @@
+﻿disponible(): True
+activo() antes: True
+
+============================================================
+PREGUNTA: ┐Cußles son las 3 empresas que mßs han subido esta ·ltima semana?
+============================================================
+TITULO: No he entendido del todo la pregunta
+TEXTO: Puedo analizar tus datos si me preguntas cosas como:
+
+- *┐QuÚ empresa tiene mejor momentum?*
+- *┐QuÚ se±ales alcistas hay hoy?*
+- *┐QuÚ empresas estßn en sobreventa?*
+- *┐Cußles tienen PER bajo y buen dividendo?*
+- *Resume BBVA* o *Compara BBVA y Santander*
+(sin tabla)
+
+============================================================
+PREGUNTA: Resume BBVA
+============================================================
+TITULO: 

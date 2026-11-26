@@ -1,0 +1,5 @@
+estimador,qlike_medio,mejora_vs_base,se_mejora,t_diebold_mariano,p_val_dm,ci95_low_boot,ci95_high_boot,scale_ratio_b,penalizacion_escala_b_1_ln_b
+Baseline 252d,-7.1397,0.0,0.0,0.0,1.0,0.0,0.0,1.038,0.0007
+EWMA 0.94,-7.1476,0.008,0.0148,0.54,0.5907,-0.0178,0.0419,1.144,0.0095
+EWMA 0.97,-7.1641,0.0245,0.0116,2.12,0.0345,-0.0003,0.0538,1.073,0.0026
+ATR / 1.6,-7.1192,-0.0205,0.0172,-1.19,0.235,-0.0586,0.0183,1.387,0.0599

@@ -1,0 +1,5 @@
+universo,tramo,brier_score_modelo,brier_score_base,brier_skill_score_pct,ci95_bss_low_pct,ci95_bss_high_pct,pendiente_calibracion,cumple_criterio_G
+IBEX 35,Diseño,0.2182,0.2325,6.16,4.79,7.31,0.48,NO
+IBEX 35,OOS,0.2274,0.2238,-1.64,-3.03,-0.52,0.41,NO
+Resto,Diseño,0.2507,0.2281,-9.88,-11.14,-8.71,-0.02,NO
+Resto,OOS,0.2615,0.2179,-20.02,-21.66,-18.57,-0.0,NO

@@ -1,0 +1,10 @@
+[project]
+name = "stocklab"
+version = "0.1.0"
+description = "StockLab - Plataforma de análisis e inversión"
+requires-python = ">=3.9"
+dependencies = [
+    "streamlit",
+    "yfinance",
+    "plotly",
+]

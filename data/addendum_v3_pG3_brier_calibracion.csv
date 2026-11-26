@@ -1,0 +1,9 @@
+version,universo,tramo,n_obs,n_fechas,brier_score_modelo,brier_score_base,bss_pct,ci95_low_bss_pct,ci95_high_bss_pct,pendiente_calibracion_logistica,cumple_criterio_G
+Con Outliers (v2 corregido),IBEX 35,Diseño,21773,646,0.2129,0.2145,0.74,-0.63,2.62,0.52,NO
+Con Outliers (v2 corregido),IBEX 35,OOS,12524,365,0.2274,0.2233,-1.8,-3.78,0.96,0.47,NO
+Con Outliers (v2 corregido),Resto (sin ^IBEX),Diseño,49243,646,0.2532,0.2138,-18.4,-20.92,-17.0,-0.04,NO
+Con Outliers (v2 corregido),Resto (sin ^IBEX),OOS,28441,365,0.2625,0.2168,-21.05,-25.04,-17.7,-0.02,NO
+Sin Outliers,IBEX 35,Diseño,21433,646,0.2128,0.2143,0.71,-0.68,2.52,0.52,NO
+Sin Outliers,IBEX 35,OOS,12316,365,0.228,0.224,-1.78,-3.78,0.96,0.46,NO
+Sin Outliers,Resto (sin ^IBEX),Diseño,43093,646,0.2516,0.2131,-18.1,-20.42,-16.28,-0.07,NO
+Sin Outliers,Resto (sin ^IBEX),OOS,24346,365,0.2564,0.2164,-18.49,-21.08,-15.88,-0.04,NO

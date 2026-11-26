@@ -1,0 +1,9 @@
+version,estimador,n_tickers,mediana_spearman,media_spearman,pct_pos,qlike_mejora_vs_base
+Con Outliers (v2),Baseline 252d,35,0.0939,0.0874,85.7,0.0
+Con Outliers (v2),EWMA 0.94,35,0.1609,0.1686,100.0,0.0113
+Con Outliers (v2),EWMA 0.97,35,0.159,0.1575,100.0,0.0282
+Con Outliers (v2),ATR / 1.6,35,0.1886,0.1947,100.0,-0.0189
+Sin Outliers (|r|>25%),Baseline 252d,35,0.0939,0.0866,85.7,0.0
+Sin Outliers (|r|>25%),EWMA 0.94,35,0.1609,0.1684,100.0,0.0079
+Sin Outliers (|r|>25%),EWMA 0.97,35,0.159,0.1573,100.0,0.0251
+Sin Outliers (|r|>25%),ATR / 1.6,35,0.1886,0.1946,100.0,-0.0196

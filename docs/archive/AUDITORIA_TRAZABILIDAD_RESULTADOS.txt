@@ -1,0 +1,1610 @@
+﻿python : 2026-07-04 00:13:22.414 WARNING 
+streamlit.runtime.caching.cache_data_api: No runtime found, using 
+MemoryCacheStorageManager
+En línea: 1 Carácter: 32
++ ... NIOENCODING='utf-8'; python -m services.auditor_pipeline 2>&1 | Out-F ...
++                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-07-04 00:1...eStorageManager 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2026-07-04 00:13:22.415 WARNING streamlit.runtime.caching.cache_data_api: No 
+runtime found, using MemoryCacheStorageManager
+2026-07-04 00:13:24.792 WARNING streamlit.runtime.caching.cache_data_api: No 
+runtime found, using MemoryCacheStorageManager
+
+1 Failed download:
+['ENCE.MC']: HTTPError('404 Client Error: Not Found for url: https://query2.fin
+ance.yahoo.com/v10/finance/quoteSummary/ENCE.MC?modules=financialData%2CquoteTy
+pe%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&corsDomain=finance.yah
+oo.com&formatted=false&symbol=ENCE.MC&lang=en-US&region=US&crumb=03%2FOfi6rpDY'
+)
+
+######################################################################
+  FASE 1.3 -- AUDITORIA DE TRAZABILIDAD DEL PIPELINE
+######################################################################
+
+======================================================================
+  MAPA DE VARIABLES: USO REAL EN EL PIPELINE
+======================================================================
+
+­ƒôÑ VARIABLES DESCARGADAS POR data_provider.py:
+   averageVolume             ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   beta                      ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   currentPrice              ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   currentRatio              ÔåÆ Ô£à Calidad/Fortaleza Financiera
+   debtToEquity              ÔåÆ Ô£à Calidad/Fortaleza Financiera
+   dividendYield             ÔåÆ Ô£à Calidad/Dividendos
+   earningsGrowth            ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   enterpriseToEbitda        ÔåÆ Ô£à Oportunidad/Valoraci├│n
+   enterpriseValue           ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   forwardPE                 ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   interestCoverage          ÔåÆ Ô£à Calidad/Fortaleza Financiera
+   marketCap                 ÔåÆ Ô£à Calidad/Ventaja Competitiva
+   operatingMargins          ÔåÆ Ô£à Calidad/Calidad Negocio
+   payoutRatio               ÔåÆ Ô£à Calidad/Dividendos
+   pegRatio                  ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   previousClose             ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   priceToBook               ÔåÆ Ô£à Oportunidad/Valoraci├│n
+   priceToSales              ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   profitMargins             ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   quickRatio                ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   recommendationMean        ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   returnOnAssets            ÔåÆ ÔØî NO UTILIZADA por ning├║n motor
+   returnOnEquity            ÔåÆ Ô£à Calidad/Calidad Negocio
+   revenueGrowth             ÔåÆ Ô£à Calidad/Calidad Negocio + Oportunidad/Momentum Fundamental
+   trailingPE                ÔåÆ Ô£à Oportunidad/Valoraci├│n
+
+­ƒôè RESUMEN:
+   Total descargadas:    25
+   Usadas en Calidad:    9
+   Usadas en Oportunidad:4
+   No utilizadas:        13
+
+ÔØî VARIABLES DESCARGADAS PERO NUNCA UTILIZADAS:
+   ÔÇó averageVolume
+   ÔÇó beta
+   ÔÇó currentPrice
+   ÔÇó earningsGrowth
+   ÔÇó enterpriseValue
+   ÔÇó forwardPE
+   ÔÇó pegRatio
+   ÔÇó previousClose
+   ÔÇó priceToSales
+   ÔÇó profitMargins
+   ÔÇó quickRatio
+   ÔÇó recommendationMean
+   ÔÇó returnOnAssets
+
+ÔÜá´©Å VARIABLES REFERENCIADAS EN ranking_engine.py (MOTOR B - C├ôDIGO MUERTO):
+   ÔÇó epsGrowth (NO existe en _CLAVES_ESTANDAR)
+   ÔÇó returnOnCapitalEmployed (NO existe en _CLAVES_ESTANDAR)
+   ÔÇó ROE, ROA, ROIC (claves legacy, NO camelCase)
+   ÔÇó PER, price_to_book, peg_ratio (claves legacy, NO camelCase)
+
+======================================================================
+
+ÔÅ│ Auditando SAN.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: SAN.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 25788144.0
+   Ô£à beta: 0.934
+   Ô£à currentPrice: 12.418
+   ÔØî currentRatio: None
+   ÔØî debtToEquity: None
+   Ô£à dividendYield: 2.03
+   Ô£à earningsGrowth: 0.674
+   ÔØî enterpriseToEbitda: None
+   Ô£à enterpriseValue: 271714222080.0
+   Ô£à forwardPE: 10.126314
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 177926127616.0
+   Ô£à operatingMargins: 0.43257
+   Ô£à payoutRatio: 0.2545
+   Ô£à pegRatio: 3.97
+   Ô£à previousClose: 12.322
+   Ô£à priceToBook: 1.7031958
+   Ô£à priceToSales: 3.755776
+   Ô£à profitMargins: 0.34098998
+   ÔØî quickRatio: None
+   Ô£à recommendationMean: 1.65
+   Ô£à returnOnAssets: 0.0077600004
+   Ô£à returnOnEquity: 0.12886
+   Ô£à revenueGrowth: 0.046
+   Ô£à trailingPE: 14.111364
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: 0.12886 ÔåÆ Convertido: 12.886000000000001
+      Regla: 12.9% > 10% ÔåÆ 6 pts
+      Score: 6 pts
+
+   Ô£à operatingMargins
+      Original: 0.43257 ÔåÆ Convertido: 43.257
+      Regla: 43.3% > 20% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à revenueGrowth
+      Original: 0.046 ÔåÆ Convertido: 4.6
+      Regla: 4.6% > 0% ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE currentRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 2.03 ÔåÆ Convertido: 2.03
+      Regla: Yield=2.0%>0 AND Payout=25.4%<70% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à payoutRatio
+      Original: 0.2545 ÔåÆ Convertido: 25.45
+      Regla: Yield=2.0%>0 AND Payout=25.4%<70% ÔåÆ 10 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 177926127616.0 ÔåÆ Convertido: 177926127616.0
+      Regla: Cap: 177.9B > 10B ÔåÆ 10 pts | Hist: 177.9B > 5B ÔåÆ 5 pts
+      Score: 15 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(6) + Margen(10) + Crecimiento(5) = 21 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 10 = 10 / 10
+      ventaja_competitiva: Cap(10) + Historial(5) = 15 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 46 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   Ô£à trailingPE
+      Original: 14.111364 ÔåÆ Convertido: 14.111364
+      Regla: PER=14.1 Ôêê [12,18] ÔåÆ 15 pts
+      Score: 15 pts
+
+   Ô£à priceToBook
+      Original: 1.7031958 ÔåÆ Convertido: 1.7031958
+      Regla: P/B=1.70 Ôêê [1.2,2.5] ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE enterpriseToEbitda
+      Original: None ÔåÆ Convertido: nan
+      Regla: EV/EBITDA=nan Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 25 / 40
+         PER(15) + P/B(5) + EV/EBITDA(5)
+      momentum_tecnico: 16.6 / 25
+         Barras disponibles: 59 | SMA20=11.52, Precio=12.32 | Precio > SMA20 ÔåÆ +15 pts | RSI=83.6 | RSI > 70 ÔåÆ +0 pts | Variaci├│n=0.78% ÔåÆ +1.6 pts
+      momentum_fundamental: 30.0 / 35
+         Base = 30.0 pts | RevGrowth=4.6% Ôêê [0,5]% ÔåÆ 30 pts (sin cambio)
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 71.6 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (46 ├ù 0.60) + (71.6 ├ù 0.40) = 56.2
+   Calidad:     46 ├ù 0.60 = 27.6
+   Oportunidad: 71.6 ├ù 0.40 = 28.6
+   SCORE FINAL: 56.2 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å currentRatio: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å enterpriseToEbitda: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 25788144.0
+      beta: 0.934
+      currentPrice: 12.418
+      earningsGrowth: 0.674
+      enterpriseValue: 271714222080.0
+      forwardPE: 10.126314
+      pegRatio: 3.97
+      previousClose: 12.322
+      priceToSales: 3.755776
+      profitMargins: 0.34098998
+      recommendationMean: 1.65
+      returnOnAssets: 0.0077600004
+   Descargadas como None:
+      quickRatio: None
+
+======================================================================
+
+
+ÔÅ│ Auditando BBVA.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: BBVA.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 10774787.0
+   Ô£à beta: 0.883
+   Ô£à currentPrice: 22.74
+   ÔØî currentRatio: None
+   ÔØî debtToEquity: None
+   Ô£à dividendYield: 4.1
+   Ô£à earningsGrowth: 0.133
+   ÔØî enterpriseToEbitda: None
+   Ô£à enterpriseValue: 145683234816.0
+   Ô£à forwardPE: 10.277129
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 126070038528.0
+   Ô£à operatingMargins: 0.54861
+   Ô£à payoutRatio: 0.4011
+   Ô£à pegRatio: 2.24
+   Ô£à previousClose: 22.44
+   Ô£à priceToBook: 2.3685033
+   Ô£à priceToSales: 3.8658745
+   Ô£à profitMargins: 0.33124
+   ÔØî quickRatio: None
+   Ô£à recommendationMean: 2.43478
+   Ô£à returnOnAssets: 0.013710001
+   Ô£à returnOnEquity: 0.19042999
+   Ô£à revenueGrowth: 0.119
+   Ô£à trailingPE: 12.494505
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: 0.19042999 ÔåÆ Convertido: 19.042999
+      Regla: 19.0% > 15% ÔåÆ 8 pts
+      Score: 8 pts
+
+   Ô£à operatingMargins
+      Original: 0.54861 ÔåÆ Convertido: 54.861000000000004
+      Regla: 54.9% > 20% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à revenueGrowth
+      Original: 0.119 ÔåÆ Convertido: 11.899999999999999
+      Regla: 11.9% > 10% ÔåÆ 15 pts
+      Score: 15 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE currentRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 4.1 ÔåÆ Convertido: 4.1
+      Regla: Yield=4.1%>0 AND Payout=40.1%<70% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à payoutRatio
+      Original: 0.4011 ÔåÆ Convertido: 40.11
+      Regla: Yield=4.1%>0 AND Payout=40.1%<70% ÔåÆ 10 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 126070038528.0 ÔåÆ Convertido: 126070038528.0
+      Regla: Cap: 126.1B > 10B ÔåÆ 10 pts | Hist: 126.1B > 5B ÔåÆ 5 pts
+      Score: 15 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(8) + Margen(10) + Crecimiento(15) = 33 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 10 = 10 / 10
+      ventaja_competitiva: Cap(10) + Historial(5) = 15 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 58 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   Ô£à trailingPE
+      Original: 12.494505 ÔåÆ Convertido: 12.494505
+      Regla: PER=12.5 Ôêê [12,18] ÔåÆ 15 pts
+      Score: 15 pts
+
+   Ô£à priceToBook
+      Original: 2.3685033 ÔåÆ Convertido: 2.3685033
+      Regla: P/B=2.37 Ôêê [1.2,2.5] ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE enterpriseToEbitda
+      Original: None ÔåÆ Convertido: nan
+      Regla: EV/EBITDA=nan Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 25 / 40
+         PER(15) + P/B(5) + EV/EBITDA(5)
+      momentum_tecnico: 17.7 / 25
+         Barras disponibles: 59 | SMA20=20.94, Precio=22.44 | Precio > SMA20 ÔåÆ +15 pts | RSI=77.6 | RSI > 70 ÔåÆ +0 pts | Variaci├│n=1.34% ÔåÆ +2.7 pts
+      momentum_fundamental: 32 / 35
+         Base = 30.0 pts | RevGrowth=11.9% > 5% ÔåÆ 32 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 74.7 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (58 ├ù 0.60) + (74.7 ├ù 0.40) = 64.7
+   Calidad:     58 ├ù 0.60 = 34.8
+   Oportunidad: 74.7 ├ù 0.40 = 29.9
+   SCORE FINAL: 64.7 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å currentRatio: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å enterpriseToEbitda: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 10774787.0
+      beta: 0.883
+      currentPrice: 22.74
+      earningsGrowth: 0.133
+      enterpriseValue: 145683234816.0
+      forwardPE: 10.277129
+      pegRatio: 2.24
+      previousClose: 22.44
+      priceToSales: 3.8658745
+      profitMargins: 0.33124
+      recommendationMean: 2.43478
+      returnOnAssets: 0.013710001
+   Descargadas como None:
+      quickRatio: None
+
+======================================================================
+
+
+ÔÅ│ Auditando ITX.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: ITX.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 2389858.0
+   Ô£à beta: 0.904
+   Ô£à currentPrice: 57.2
+   Ô£à currentRatio: 1.291
+   Ô£à debtToEquity: 0.31815
+   Ô£à dividendYield: 1.15
+   Ô£à earningsGrowth: 0.053
+   Ô£à enterpriseToEbitda: 18.066
+   Ô£à enterpriseValue: 171865423872.0
+   Ô£à forwardPE: 23.991175
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 178084577280.0
+   Ô£à operatingMargins: 0.20069
+   Ô£à payoutRatio: 0.5776
+   Ô£à pegRatio: 3.37
+   Ô£à previousClose: 56.68
+   Ô£à priceToBook: 9.387822
+   Ô£à priceToSales: 4.4145904
+   Ô£à profitMargins: 0.15592
+   Ô£à quickRatio: 0.952
+   Ô£à recommendationMean: 1.70833
+   Ô£à returnOnAssets: 0.14310001
+   Ô£à returnOnEquity: 0.33955002
+   Ô£à revenueGrowth: 0.058
+   Ô£à trailingPE: 28.316832
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: 0.33955002 ÔåÆ Convertido: 33.955002
+      Regla: 34.0% > 20% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à operatingMargins
+      Original: 0.20069 ÔåÆ Convertido: 20.069
+      Regla: 20.1% > 20% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à revenueGrowth
+      Original: 0.058 ÔåÆ Convertido: 5.800000000000001
+      Regla: 5.8% > 5% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à debtToEquity
+      Original: 0.31815 ÔåÆ Convertido: 0.31815
+      Regla: 0.32 < 0.5 ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à currentRatio
+      Original: 1.291 ÔåÆ Convertido: 1.291
+      Regla: 1.29 ÔëÑ 1.0 ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 1.15 ÔåÆ Convertido: 1.15
+      Regla: Yield=1.1%>0 AND Payout=57.8%<70% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à payoutRatio
+      Original: 0.5776 ÔåÆ Convertido: 57.76
+      Regla: Yield=1.1%>0 AND Payout=57.8%<70% ÔåÆ 10 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 178084577280.0 ÔåÆ Convertido: 178084577280.0
+      Regla: Cap: 178.1B > 10B ÔåÆ 10 pts | Hist: 178.1B > 5B ÔåÆ 5 pts
+      Score: 15 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(10) + Margen(10) + Crecimiento(10) = 30 / 40
+      fortaleza_financiera: Deuda(10) + Liquidez(5) + Cobertura(0) = 15 / 30
+      dividendos: Yield+Payout ÔåÆ 10 = 10 / 10
+      ventaja_competitiva: Cap(10) + Historial(5) = 15 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 70 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   Ô£à trailingPE
+      Original: 28.316832 ÔåÆ Convertido: 28.316832
+      Regla: PER=28.3 > 18 ÔåÆ 5 pts
+      Score: 5 pts
+
+   Ô£à priceToBook
+      Original: 9.387822 ÔåÆ Convertido: 9.387822
+      Regla: P/B=9.39 fuera de rango ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à enterpriseToEbitda
+      Original: 18.066 ÔåÆ Convertido: 18.066
+      Regla: EV/EBITDA=18.1 > 15 ÔåÆ 3 pts
+      Score: 3 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 8 / 40
+         PER(5) + P/B(0) + EV/EBITDA(3)
+      momentum_tecnico: 26.8 / 25
+         Barras disponibles: 59 | SMA20=55.72, Precio=56.68 | Precio > SMA20 ÔåÆ +15 pts | RSI=54.9 | RSI Ôêê [30,70] ÔåÆ +10 pts | Variaci├│n=0.92% ÔåÆ +1.8 pts
+      momentum_fundamental: 32 / 35
+         Base = 30.0 pts | RevGrowth=5.8% > 5% ÔåÆ 32 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 66.8 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (70 ├ù 0.60) + (66.8 ├ù 0.40) = 68.7
+   Calidad:     70 ├ù 0.60 = 42.0
+   Oportunidad: 66.8 ├ù 0.40 = 26.7
+   SCORE FINAL: 68.7 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 2389858.0
+      beta: 0.904
+      currentPrice: 57.2
+      earningsGrowth: 0.053
+      enterpriseValue: 171865423872.0
+      forwardPE: 23.991175
+      pegRatio: 3.37
+      previousClose: 56.68
+      priceToSales: 4.4145904
+      profitMargins: 0.15592
+      quickRatio: 0.952
+      recommendationMean: 1.70833
+      returnOnAssets: 0.14310001
+
+======================================================================
+
+
+ÔÅ│ Auditando REP.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: REP.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 4131965.0
+   Ô£à beta: -0.16
+   Ô£à currentPrice: 22.33
+   Ô£à currentRatio: 1.429
+   Ô£à debtToEquity: 0.49173
+   Ô£à dividendYield: 4.9
+   Ô£à earningsGrowth: 1.733
+   Ô£à enterpriseToEbitda: 6.606
+   Ô£à enterpriseValue: 34038865920.0
+   Ô£à forwardPE: 6.75018
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 24392089600.0
+   Ô£à operatingMargins: 0.12274
+   Ô£à payoutRatio: 0.4673
+   Ô£à pegRatio: 0.43
+   Ô£à previousClose: 22.47
+   Ô£à priceToBook: 1.0979987
+   Ô£à priceToSales: 0.49218285
+   Ô£à profitMargins: 0.04968
+   Ô£à quickRatio: 0.991
+   Ô£à recommendationMean: 2.3913
+   Ô£à returnOnAssets: 0.03652
+   Ô£à returnOnEquity: 0.09488
+   Ô£à revenueGrowth: 0.084
+   Ô£à trailingPE: 10.434579
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: 0.09488 ÔåÆ Convertido: 9.488000000000001
+      Regla: 9.5% > 5% ÔåÆ 3 pts
+      Score: 3 pts
+
+   Ô£à operatingMargins
+      Original: 0.12274 ÔåÆ Convertido: 12.274000000000001
+      Regla: 12.3% > 10% ÔåÆ 6 pts
+      Score: 6 pts
+
+   Ô£à revenueGrowth
+      Original: 0.084 ÔåÆ Convertido: 8.4
+      Regla: 8.4% > 5% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à debtToEquity
+      Original: 0.49173 ÔåÆ Convertido: 0.49173
+      Regla: 0.49 < 0.5 ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à currentRatio
+      Original: 1.429 ÔåÆ Convertido: 1.429
+      Regla: 1.43 ÔëÑ 1.0 ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 4.9 ÔåÆ Convertido: 4.9
+      Regla: Yield=4.9%>0 AND Payout=46.7%<70% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à payoutRatio
+      Original: 0.4673 ÔåÆ Convertido: 46.73
+      Regla: Yield=4.9%>0 AND Payout=46.7%<70% ÔåÆ 10 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 24392089600.0 ÔåÆ Convertido: 24392089600.0
+      Regla: Cap: 24.4B > 10B ÔåÆ 10 pts | Hist: 24.4B > 5B ÔåÆ 5 pts
+      Score: 15 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(3) + Margen(6) + Crecimiento(10) = 19 / 40
+      fortaleza_financiera: Deuda(10) + Liquidez(5) + Cobertura(0) = 15 / 30
+      dividendos: Yield+Payout ÔåÆ 10 = 10 / 10
+      ventaja_competitiva: Cap(10) + Historial(5) = 15 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 59 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   Ô£à trailingPE
+      Original: 10.434579 ÔåÆ Convertido: 10.434579
+      Regla: PER=10.4 Ôêê (0,12) ÔåÆ 20 pts
+      Score: 20 pts
+
+   Ô£à priceToBook
+      Original: 1.0979987 ÔåÆ Convertido: 1.0979987
+      Regla: P/B=1.10 Ôêê (0,1.2) ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à enterpriseToEbitda
+      Original: 6.606 ÔåÆ Convertido: 6.606
+      Regla: EV/EBITDA=6.6 Ôêê (0,10) ÔåÆ 10 pts
+      Score: 10 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 40 / 40
+         PER(20) + P/B(10) + EV/EBITDA(10)
+      momentum_tecnico: 25.0 / 25
+         Barras disponibles: 59 | SMA20=22.10, Precio=22.47 | Precio > SMA20 ÔåÆ +15 pts | RSI=47.5 | RSI Ôêê [30,70] ÔåÆ +10 pts
+      momentum_fundamental: 32 / 35
+         Base = 30.0 pts | RevGrowth=8.4% > 5% ÔåÆ 32 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 97.0 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (59 ├ù 0.60) + (97.0 ├ù 0.40) = 74.2
+   Calidad:     59 ├ù 0.60 = 35.4
+   Oportunidad: 97.0 ├ù 0.40 = 38.8
+   SCORE FINAL: 74.2 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 4131965.0
+      beta: -0.16
+      currentPrice: 22.33
+      earningsGrowth: 1.733
+      enterpriseValue: 34038865920.0
+      forwardPE: 6.75018
+      pegRatio: 0.43
+      previousClose: 22.47
+      priceToSales: 0.49218285
+      profitMargins: 0.04968
+      quickRatio: 0.991
+      recommendationMean: 2.3913
+      returnOnAssets: 0.03652
+
+======================================================================
+
+
+ÔÅ│ Auditando TEF.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: TEF.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 13829371.0
+   Ô£à beta: 0.291
+   Ô£à currentPrice: 3.55
+   Ô£à currentRatio: 0.841
+   Ô£à debtToEquity: 2.30558
+   Ô£à dividendYield: 4.23
+   ÔØî earningsGrowth: None
+   Ô£à enterpriseToEbitda: 8.44
+   Ô£à enterpriseValue: 59499298816.0
+   Ô£à forwardPE: 9.033309
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 20014608384.0
+   Ô£à operatingMargins: 0.13287
+   Ô£à payoutRatio: 1.1111
+   Ô£à pegRatio: 0.38
+   Ô£à previousClose: 3.549
+   Ô£à priceToBook: 1.3754358
+   Ô£à priceToSales: 0.55741686
+   Ô£à profitMargins: -0.09538999
+   Ô£à quickRatio: 0.706
+   ÔØî recommendationMean: None
+   Ô£à returnOnAssets: 0.0097
+   Ô£à returnOnEquity: -0.08895001
+   Ô£à revenueGrowth: -0.124
+   ÔØî trailingPE: None
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: -0.08895001 ÔåÆ Convertido: -8.895000999999999
+      Regla: -8.9% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à operatingMargins
+      Original: 0.13287 ÔåÆ Convertido: 13.286999999999999
+      Regla: 13.3% > 10% ÔåÆ 6 pts
+      Score: 6 pts
+
+   Ô£à revenueGrowth
+      Original: -0.124 ÔåÆ Convertido: -12.4
+      Regla: -12.4% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à debtToEquity
+      Original: 2.30558 ÔåÆ Convertido: 0.0230558
+      Regla: 0.02 < 0.5 ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à currentRatio
+      Original: 0.841 ÔåÆ Convertido: 0.841
+      Regla: 0.84 < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 4.23 ÔåÆ Convertido: 4.23
+      Regla: Yield=4.2%>0 AND Payout=1.1%<70% ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à payoutRatio
+      Original: 1.1111 ÔåÆ Convertido: 1.1111
+      Regla: Yield=4.2%>0 AND Payout=1.1%<70% ÔåÆ 10 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 20014608384.0 ÔåÆ Convertido: 20014608384.0
+      Regla: Cap: 20.0B > 10B ÔåÆ 10 pts | Hist: 20.0B > 5B ÔåÆ 5 pts
+      Score: 15 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(6) + Crecimiento(0) = 6 / 40
+      fortaleza_financiera: Deuda(10) + Liquidez(0) + Cobertura(0) = 10 / 30
+      dividendos: Yield+Payout ÔåÆ 10 = 10 / 10
+      ventaja_competitiva: Cap(10) + Historial(5) = 15 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 41 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   ÔÜá´©Å NONE trailingPE
+      Original: None ÔåÆ Convertido: nan
+      Regla: PER=nan Ôëñ 0 ÔåÆ 10 pts (neutro)
+      Score: 10 pts
+
+   Ô£à priceToBook
+      Original: 1.3754358 ÔåÆ Convertido: 1.3754358
+      Regla: P/B=1.38 Ôêê [1.2,2.5] ÔåÆ 5 pts
+      Score: 5 pts
+
+   Ô£à enterpriseToEbitda
+      Original: 8.44 ÔåÆ Convertido: 8.44
+      Regla: EV/EBITDA=8.4 Ôêê (0,10) ÔåÆ 10 pts
+      Score: 10 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 25 / 40
+         PER(10) + P/B(5) + EV/EBITDA(10)
+      momentum_tecnico: 10.1 / 25
+         Barras disponibles: 59 | SMA20=3.68, Precio=3.55 | Precio Ôëñ SMA20 ÔåÆ +0 pts | RSI=30.2 | RSI Ôêê [30,70] ÔåÆ +10 pts | Variaci├│n=0.03% ÔåÆ +0.1 pts
+      momentum_fundamental: 25 / 35
+         Base = 30.0 pts | RevGrowth=-12.4% < 0% ÔåÆ 25 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 60.1 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (41 ├ù 0.60) + (60.1 ├ù 0.40) = 48.6
+   Calidad:     41 ├ù 0.60 = 24.6
+   Oportunidad: 60.1 ├ù 0.40 = 24.0
+   SCORE FINAL: 48.6 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å trailingPE: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 13829371.0
+      beta: 0.291
+      currentPrice: 3.55
+      enterpriseValue: 59499298816.0
+      forwardPE: 9.033309
+      pegRatio: 0.38
+      previousClose: 3.549
+      priceToSales: 0.55741686
+      profitMargins: -0.09538999
+      quickRatio: 0.706
+      returnOnAssets: 0.0097
+   Descargadas como None:
+      earningsGrowth: None
+      recommendationMean: None
+
+======================================================================
+
+
+ÔÅ│ Auditando ENCE.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: ENCE.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: FALLBACK
+   ÔØî Yahoo: Sin datos ├║tiles o error
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   ÔØî averageVolume: None
+   ÔØî beta: None
+   ÔØî currentPrice: None
+   ÔØî currentRatio: None
+   ÔØî debtToEquity: None
+   ÔØî dividendYield: None
+   ÔØî earningsGrowth: None
+   ÔØî enterpriseToEbitda: None
+   ÔØî enterpriseValue: None
+   ÔØî forwardPE: None
+   ÔØî interestCoverage: None
+   ÔØî marketCap: None
+   ÔØî operatingMargins: None
+   ÔØî payoutRatio: None
+   ÔØî pegRatio: None
+   ÔØî previousClose: None
+   ÔØî priceToBook: None
+   ÔØî priceToSales: None
+   ÔØî profitMargins: None
+   ÔØî quickRatio: None
+   ÔØî recommendationMean: None
+   ÔØî returnOnAssets: None
+   ÔØî returnOnEquity: None
+   ÔØî revenueGrowth: None
+   ÔØî trailingPE: None
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   ÔÜá´©Å NONE returnOnEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE operatingMargins
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE revenueGrowth
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE currentRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE dividendYield
+      Original: None ÔåÆ Convertido: nan
+      Regla: Yield=nan%, Payout=nan% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE payoutRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: Yield=nan%, Payout=nan% ÔåÆ 0 pts
+      Score: (compartido con dividendYield) pts
+
+   ÔÜá´©Å NONE marketCap
+      Original: None ÔåÆ Convertido: nan
+      Regla: Cap: nanB Ôëñ 2B ÔåÆ 0 pts | Hist: nanB Ôëñ 5B ÔåÆ 0 pts
+      Score: 0 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(0) + Crecimiento(0) = 0 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 0 = 0 / 10
+      ventaja_competitiva: Cap(0) + Historial(0) = 0 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 0.0 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   ÔÜá´©Å NONE trailingPE
+      Original: None ÔåÆ Convertido: nan
+      Regla: PER=nan Ôëñ 0 ÔåÆ 10 pts (neutro)
+      Score: 10 pts
+
+   ÔÜá´©Å NONE priceToBook
+      Original: None ÔåÆ Convertido: nan
+      Regla: P/B=nan fuera de rango ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE enterpriseToEbitda
+      Original: None ÔåÆ Convertido: nan
+      Regla: EV/EBITDA=nan Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 15 / 40
+         PER(10) + P/B(0) + EV/EBITDA(5)
+      momentum_tecnico: 12.5 / 25
+         Sin datos hist├│ricos | FALLBACK: momentum=0 ÔåÆ 12.5 pts neutro
+      momentum_fundamental: 30.0 / 35
+         Base = 30.0 pts | RevGrowth=nan% Ôêê [0,5]% ÔåÆ 30 pts (sin cambio)
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 57.5 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (0.0 ├ù 0.60) + (57.5 ├ù 0.40) = 23.0
+   Calidad:     0.0 ├ù 0.60 = 0.0
+   Oportunidad: 57.5 ├ù 0.40 = 23.0
+   SCORE FINAL: 23.0 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å returnOnEquity: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å operatingMargins: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å revenueGrowth: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å currentRatio: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å dividendYield: None en datos finales ÔåÆ Punt├║a como 0 en Dividendos
+   ÔÜá´©Å payoutRatio: None en datos finales ÔåÆ Punt├║a como 0 en Dividendos
+   ÔÜá´©Å marketCap: None en datos finales ÔåÆ Punt├║a como 0 en Ventaja Competitiva
+   ÔÜá´©Å trailingPE: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+   ÔÜá´©Å priceToBook: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+   ÔÜá´©Å enterpriseToEbitda: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas como None:
+      averageVolume: None
+      beta: None
+      currentPrice: None
+      earningsGrowth: None
+      enterpriseValue: None
+      forwardPE: None
+      pegRatio: None
+      previousClose: None
+      priceToSales: None
+      profitMargins: None
+      quickRatio: None
+      recommendationMean: None
+      returnOnAssets: None
+
+======================================================================
+
+
+ÔÅ│ Auditando DIA.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: DIA.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 30717.0
+   Ô£à beta: 0.641
+   Ô£à currentPrice: 42.5
+   Ô£à currentRatio: 0.561
+   Ô£à debtToEquity: 7.5988999999999995
+   Ô£à dividendYield: 0.0
+   Ô£à earningsGrowth: 1.787
+   Ô£à enterpriseToEbitda: 9.616
+   Ô£à enterpriseValue: 3057475840.0
+   Ô£à forwardPE: 19.516361
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 2465192192.0
+   Ô£à operatingMargins: 0.04208
+   Ô£à payoutRatio: 0.0
+   Ô£à pegRatio: 0.87
+   Ô£à previousClose: 42.4
+   Ô£à priceToBook: 19.66682
+   Ô£à priceToSales: 0.4299983
+   Ô£à profitMargins: 0.0225
+   Ô£à quickRatio: 0.37
+   Ô£à recommendationMean: 1.0
+   Ô£à returnOnAssets: 0.0523
+   Ô£à returnOnEquity: 1.4703599
+   Ô£à revenueGrowth: -0.043
+   Ô£à trailingPE: 21.573605
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   Ô£à returnOnEquity
+      Original: 1.4703599 ÔåÆ Convertido: 1.4703599
+      Regla: 1.5% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à operatingMargins
+      Original: 0.04208 ÔåÆ Convertido: 4.208
+      Regla: 4.2% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à revenueGrowth
+      Original: -0.043 ÔåÆ Convertido: -4.3
+      Regla: -4.3% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à debtToEquity
+      Original: 7.5988999999999995 ÔåÆ Convertido: 0.075989
+      Regla: 0.08 < 0.5 ÔåÆ 10 pts
+      Score: 10 pts
+
+   Ô£à currentRatio
+      Original: 0.561 ÔåÆ Convertido: 0.561
+      Regla: 0.56 < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à payoutRatio
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 2465192192.0 ÔåÆ Convertido: 2465192192.0
+      Regla: Cap: 2.5B > 2B ÔåÆ 5 pts | Hist: 2.47B Ôëñ 5B ÔåÆ 0 pts
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(0) + Crecimiento(0) = 0 / 40
+      fortaleza_financiera: Deuda(10) + Liquidez(0) + Cobertura(0) = 10 / 30
+      dividendos: Yield+Payout ÔåÆ 0 = 0 / 10
+      ventaja_competitiva: Cap(5) + Historial(0) = 5 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 15 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   Ô£à trailingPE
+      Original: 21.573605 ÔåÆ Convertido: 21.573605
+      Regla: PER=21.6 > 18 ÔåÆ 5 pts
+      Score: 5 pts
+
+   Ô£à priceToBook
+      Original: 19.66682 ÔåÆ Convertido: 19.66682
+      Regla: P/B=19.67 fuera de rango ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à enterpriseToEbitda
+      Original: 9.616 ÔåÆ Convertido: 9.616
+      Regla: EV/EBITDA=9.6 Ôêê (0,10) ÔåÆ 10 pts
+      Score: 10 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 15 / 40
+         PER(5) + P/B(0) + EV/EBITDA(10)
+      momentum_tecnico: 25.5 / 25
+         Barras disponibles: 59 | SMA20=39.38, Precio=42.40 | Precio > SMA20 ÔåÆ +15 pts | RSI=58.0 | RSI Ôêê [30,70] ÔåÆ +10 pts | Variaci├│n=0.24% ÔåÆ +0.5 pts
+      momentum_fundamental: 25 / 35
+         Base = 30.0 pts | RevGrowth=-4.3% < 0% ÔåÆ 25 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 65.5 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (15 ├ù 0.60) + (65.5 ├ù 0.40) = 35.2
+   Calidad:     15 ├ù 0.60 = 9.0
+   Oportunidad: 65.5 ├ù 0.40 = 26.2
+   SCORE FINAL: 35.2 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 30717.0
+      beta: 0.641
+      currentPrice: 42.5
+      earningsGrowth: 1.787
+      enterpriseValue: 3057475840.0
+      forwardPE: 19.516361
+      pegRatio: 0.87
+      previousClose: 42.4
+      priceToSales: 0.4299983
+      profitMargins: 0.0225
+      quickRatio: 0.37
+      recommendationMean: 1.0
+      returnOnAssets: 0.0523
+
+======================================================================
+
+
+ÔÅ│ Auditando ORY.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: ORY.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 448204.0
+   Ô£à beta: 0.447
+   Ô£à currentPrice: 2.984
+   ÔØî currentRatio: None
+   ÔØî debtToEquity: None
+   Ô£à dividendYield: 0.0
+   ÔØî earningsGrowth: None
+   ÔØî enterpriseToEbitda: None
+   ÔØî enterpriseValue: None
+   Ô£à forwardPE: 229.53845
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 235297712.0
+   Ô£à operatingMargins: -0.75338
+   Ô£à payoutRatio: 0.0
+   ÔØî pegRatio: None
+   Ô£à previousClose: 2.968
+   Ô£à priceToBook: 1.9631579
+   Ô£à priceToSales: 18.66338
+   Ô£à profitMargins: -0.20433001
+   ÔØî quickRatio: None
+   ÔØî recommendationMean: None
+   ÔØî returnOnAssets: None
+   ÔØî returnOnEquity: None
+   ÔØî revenueGrowth: None
+   ÔØî trailingPE: None
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   ÔÜá´©Å NONE returnOnEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à operatingMargins
+      Original: -0.75338 ÔåÆ Convertido: -75.33800000000001
+      Regla: -75.3% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE revenueGrowth
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE currentRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à payoutRatio
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 235297712.0 ÔåÆ Convertido: 235297712.0
+      Regla: Cap: 0.24B Ôëñ 2B ÔåÆ 0 pts | Hist: 0.24B Ôëñ 5B ÔåÆ 0 pts
+      Score: 0 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(0) + Crecimiento(0) = 0 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 0 = 0 / 10
+      ventaja_competitiva: Cap(0) + Historial(0) = 0 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 0.0 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   ÔÜá´©Å NONE trailingPE
+      Original: None ÔåÆ Convertido: nan
+      Regla: PER=nan Ôëñ 0 ÔåÆ 10 pts (neutro)
+      Score: 10 pts
+
+   Ô£à priceToBook
+      Original: 1.9631579 ÔåÆ Convertido: 1.9631579
+      Regla: P/B=1.96 Ôêê [1.2,2.5] ÔåÆ 5 pts
+      Score: 5 pts
+
+   ÔÜá´©Å NONE enterpriseToEbitda
+      Original: None ÔåÆ Convertido: nan
+      Regla: EV/EBITDA=nan Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 20 / 40
+         PER(10) + P/B(5) + EV/EBITDA(5)
+      momentum_tecnico: 11.1 / 25
+         Barras disponibles: 59 | SMA20=3.09, Precio=2.97 | Precio Ôëñ SMA20 ÔåÆ +0 pts | RSI=38.3 | RSI Ôêê [30,70] ÔåÆ +10 pts | Variaci├│n=0.54% ÔåÆ +1.1 pts
+      momentum_fundamental: 30.0 / 35
+         Base = 30.0 pts | RevGrowth=nan% Ôêê [0,5]% ÔåÆ 30 pts (sin cambio)
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 61.1 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (0.0 ├ù 0.60) + (61.1 ├ù 0.40) = 24.4
+   Calidad:     0.0 ├ù 0.60 = 0.0
+   Oportunidad: 61.1 ├ù 0.40 = 24.4
+   SCORE FINAL: 24.4 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å returnOnEquity: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å revenueGrowth: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å currentRatio: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å trailingPE: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+   ÔÜá´©Å enterpriseToEbitda: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 448204.0
+      beta: 0.447
+      currentPrice: 2.984
+      forwardPE: 229.53845
+      previousClose: 2.968
+      priceToSales: 18.66338
+      profitMargins: -0.20433001
+   Descargadas como None:
+      earningsGrowth: None
+      enterpriseValue: None
+      pegRatio: None
+      quickRatio: None
+      recommendationMean: None
+      returnOnAssets: None
+
+======================================================================
+
+
+ÔÅ│ Auditando GRF-P.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: GRF-P.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: FALLBACK
+   ÔØî Yahoo: Sin datos ├║tiles o error
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   ÔØî averageVolume: None
+   ÔØî beta: None
+   ÔØî currentPrice: None
+   ÔØî currentRatio: None
+   ÔØî debtToEquity: None
+   ÔØî dividendYield: None
+   ÔØî earningsGrowth: None
+   ÔØî enterpriseToEbitda: None
+   ÔØî enterpriseValue: None
+   ÔØî forwardPE: None
+   ÔØî interestCoverage: None
+   ÔØî marketCap: None
+   ÔØî operatingMargins: None
+   ÔØî payoutRatio: None
+   ÔØî pegRatio: None
+   ÔØî previousClose: None
+   ÔØî priceToBook: None
+   ÔØî priceToSales: None
+   ÔØî profitMargins: None
+   ÔØî quickRatio: None
+   ÔØî recommendationMean: None
+   ÔØî returnOnAssets: None
+   ÔØî returnOnEquity: None
+   ÔØî revenueGrowth: None
+   ÔØî trailingPE: None
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   ÔÜá´©Å NONE returnOnEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE operatingMargins
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE revenueGrowth
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE currentRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE dividendYield
+      Original: None ÔåÆ Convertido: nan
+      Regla: Yield=nan%, Payout=nan% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE payoutRatio
+      Original: None ÔåÆ Convertido: nan
+      Regla: Yield=nan%, Payout=nan% ÔåÆ 0 pts
+      Score: (compartido con dividendYield) pts
+
+   ÔÜá´©Å NONE marketCap
+      Original: None ÔåÆ Convertido: nan
+      Regla: Cap: nanB Ôëñ 2B ÔåÆ 0 pts | Hist: nanB Ôëñ 5B ÔåÆ 0 pts
+      Score: 0 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(0) + Crecimiento(0) = 0 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 0 = 0 / 10
+      ventaja_competitiva: Cap(0) + Historial(0) = 0 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 0.0 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   ÔÜá´©Å NONE trailingPE
+      Original: None ÔåÆ Convertido: nan
+      Regla: PER=nan Ôëñ 0 ÔåÆ 10 pts (neutro)
+      Score: 10 pts
+
+   ÔÜá´©Å NONE priceToBook
+      Original: None ÔåÆ Convertido: nan
+      Regla: P/B=nan fuera de rango ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE enterpriseToEbitda
+      Original: None ÔåÆ Convertido: nan
+      Regla: EV/EBITDA=nan Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 15 / 40
+         PER(10) + P/B(0) + EV/EBITDA(5)
+      momentum_tecnico: 10.0 / 25
+         Barras disponibles: 59 | SMA20=6.41, Precio=6.30 | Precio Ôëñ SMA20 ÔåÆ +0 pts | RSI=42.3 | RSI Ôêê [30,70] ÔåÆ +10 pts
+      momentum_fundamental: 30.0 / 35
+         Base = 30.0 pts | RevGrowth=nan% Ôêê [0,5]% ÔåÆ 30 pts (sin cambio)
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 55.0 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (0.0 ├ù 0.60) + (55.0 ├ù 0.40) = 22.0
+   Calidad:     0.0 ├ù 0.60 = 0.0
+   Oportunidad: 55.0 ├ù 0.40 = 22.0
+   SCORE FINAL: 22.0 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å returnOnEquity: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å operatingMargins: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å revenueGrowth: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å currentRatio: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å dividendYield: None en datos finales ÔåÆ Punt├║a como 0 en Dividendos
+   ÔÜá´©Å payoutRatio: None en datos finales ÔåÆ Punt├║a como 0 en Dividendos
+   ÔÜá´©Å marketCap: None en datos finales ÔåÆ Punt├║a como 0 en Ventaja Competitiva
+   ÔÜá´©Å trailingPE: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+   ÔÜá´©Å priceToBook: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+   ÔÜá´©Å enterpriseToEbitda: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas como None:
+      averageVolume: None
+      beta: None
+      currentPrice: None
+      earningsGrowth: None
+      enterpriseValue: None
+      forwardPE: None
+      pegRatio: None
+      previousClose: None
+      priceToSales: None
+      profitMargins: None
+      quickRatio: None
+      recommendationMean: None
+      returnOnAssets: None
+
+======================================================================
+
+
+ÔÅ│ Auditando MDF.MC...
+======================================================================
+  AUDITOR├ìA DE TRAZABILIDAD: MDF.MC
+======================================================================
+
+­ƒôí 1. FUENTE UTILIZADA
+   Fuente seleccionada: YAHOO
+   Ô£à Yahoo: Respondi├│ correctamente
+   ÔØî FMP: Sin datos ├║tiles o error
+   ÔØî Finnhub: Sin datos ├║tiles o error
+
+­ƒôª 2. DATOS NORMALIZADOS (salida de data_provider)
+   Ô£à averageVolume: 982967.0
+   Ô£à beta: 0.902
+   Ô£à currentPrice: 0.2
+   Ô£à currentRatio: 0.179
+   ÔØî debtToEquity: None
+   Ô£à dividendYield: 0.0
+   ÔØî earningsGrowth: None
+   Ô£à enterpriseToEbitda: -11.155
+   Ô£à enterpriseValue: 316251872.0
+   ÔØî forwardPE: None
+   ÔØî interestCoverage: None
+   Ô£à marketCap: 43035884.0
+   Ô£à operatingMargins: -0.48073003
+   Ô£à payoutRatio: 0.0
+   Ô£à pegRatio: 4.22
+   Ô£à previousClose: 0.2
+   Ô£à priceToBook: -0.12746973
+   Ô£à priceToSales: 0.26637873
+   Ô£à profitMargins: -0.43947
+   Ô£à quickRatio: 0.176
+   ÔØî recommendationMean: None
+   Ô£à returnOnAssets: -0.10732
+   ÔØî returnOnEquity: None
+   Ô£à revenueGrowth: -0.674
+   ÔØî trailingPE: None
+
+­ƒÅå 3. TRAZABILIDAD CALIDAD EMPRESARIAL
+   ÔÜá´©Å NONE returnOnEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à operatingMargins
+      Original: -0.48073003 ÔåÆ Convertido: -48.073003
+      Regla: -48.1% Ôëñ 5% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à revenueGrowth
+      Original: -0.674 ÔåÆ Convertido: -67.4
+      Regla: -67.4% Ôëñ 0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE debtToEquity
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan > 2.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à currentRatio
+      Original: 0.179 ÔåÆ Convertido: 0.179
+      Regla: 0.18 < 1.0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   ÔÜá´©Å NONE interestCoverage
+      Original: None ÔåÆ Convertido: nan
+      Regla: nan Ôëñ 0 ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à dividendYield
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à payoutRatio
+      Original: 0.0 ÔåÆ Convertido: 0.0
+      Regla: Yield=0.0%, Payout=0.0% ÔåÆ 0 pts
+      Score: (compartido con dividendYield) pts
+
+   Ô£à marketCap
+      Original: 43035884.0 ÔåÆ Convertido: 43035884.0
+      Regla: Cap: 0.04B Ôëñ 2B ÔåÆ 0 pts | Hist: 0.04B Ôëñ 5B ÔåÆ 0 pts
+      Score: 0 pts
+
+   ­ƒôè COMPONENTES:
+      calidad_negocio: ROE(0) + Margen(0) + Crecimiento(0) = 0 / 40
+      fortaleza_financiera: Deuda(0) + Liquidez(0) + Cobertura(0) = 0 / 30
+      dividendos: Yield+Payout ÔåÆ 0 = 0 / 10
+      ventaja_competitiva: Cap(0) + Historial(0) = 0 / 20
+
+   ­ƒÄ» SCORE CALIDAD TOTAL: 0.0 / 100
+
+­ƒÄ» 4. TRAZABILIDAD OPORTUNIDAD DE INVERSI├ôN
+   ÔÜá´©Å NONE trailingPE
+      Original: None ÔåÆ Convertido: nan
+      Regla: PER=nan Ôëñ 0 ÔåÆ 10 pts (neutro)
+      Score: 10 pts
+
+   Ô£à priceToBook
+      Original: -0.12746973 ÔåÆ Convertido: -0.12746973
+      Regla: P/B=-0.13 fuera de rango ÔåÆ 0 pts
+      Score: 0 pts
+
+   Ô£à enterpriseToEbitda
+      Original: -11.155 ÔåÆ Convertido: -11.155
+      Regla: EV/EBITDA=-11.2 Ôëñ 0 ÔåÆ 5 pts (neutro)
+      Score: 5 pts
+
+   ­ƒôè COMPONENTES:
+      valoracion: 15 / 40
+         PER(10) + P/B(0) + EV/EBITDA(5)
+      momentum_tecnico: 10.0 / 25
+         Barras disponibles: 59 | SMA20=0.21, Precio=0.20 | Precio Ôëñ SMA20 ÔåÆ +0 pts | RSI=57.4 | RSI Ôêê [30,70] ÔåÆ +10 pts
+      momentum_fundamental: 25 / 35
+         Base = 30.0 pts | RevGrowth=-67.4% < 0% ÔåÆ 25 pts
+
+   ­ƒÄ» SCORE OPORTUNIDAD TOTAL: 50.0 / 100
+
+Ô¡É 5. SCORE FINAL STOCKLAB
+   F├│rmula: (0.0 ├ù 0.60) + (50.0 ├ù 0.40) = 20.0
+   Calidad:     0.0 ├ù 0.60 = 0.0
+   Oportunidad: 50.0 ├ù 0.40 = 20.0
+   SCORE FINAL: 20.0 / 100
+
+­ƒöì 6. AUDITOR├ìA DE P├ëRDIDA DE DATOS
+   ÔÜá´©Å returnOnEquity: None en datos finales ÔåÆ Punt├║a como 0 en Calidad Negocio
+   ÔÜá´©Å debtToEquity: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å interestCoverage: None en datos finales ÔåÆ Punt├║a como 0 en Fortaleza Financiera
+   ÔÜá´©Å trailingPE: None en datos finales ÔåÆ Punt├║a como neutro/0 en Valoraci├│n
+
+­ƒôï 7. VARIABLES DESCARGADAS PERO NO UTILIZADAS POR EL MOTOR
+   Descargadas con valor (pero ignoradas por el scoring):
+      averageVolume: 982967.0
+      beta: 0.902
+      currentPrice: 0.2
+      enterpriseValue: 316251872.0
+      pegRatio: 4.22
+      previousClose: 0.2
+      priceToSales: 0.26637873
+      profitMargins: -0.43947
+      quickRatio: 0.176
+      returnOnAssets: -0.10732
+   Descargadas como None:
+      earningsGrowth: None
+      forwardPE: None
+      recommendationMean: None
+
+======================================================================
+
+
+ÔÅ│ Generando certificaci├│n de normalizaci├│n para SAN.MC...
+================================================================================
+  CERTIFICACI├ôN DE NORMALIZACI├ôN: SAN.MC
+================================================================================
+Variable                         Yahoo          FMP      Finnhub  Consistente
+------------------------- ------------ ------------ ------------ ------------
+currentRatio                      None         None         None            Ô£à
+debtToEquity                      None         None         None            Ô£à
+dividendYield                   2.0300         None         None            Ô£à
+enterpriseToEbitda                None         None         None            Ô£à
+interestCoverage                  None         None         None            Ô£à
+marketCap                 177926127616.0000         None         None            Ô£à
+operatingMargins                0.4326         None         None            Ô£à
+payoutRatio                     0.2545         None         None            Ô£à
+priceToBook                     1.7032         None         None            Ô£à
+returnOnEquity                  0.1289         None         None            Ô£à
+revenueGrowth                   0.0460         None         None            Ô£à
+trailingPE                     14.1114         None         None            Ô£à
+================================================================================
+
+Ô£à Auditor├¡a completada.

@@ -1,0 +1,46 @@
+name: StockLab · Alertas por Correo (BME)
+
+on:
+  schedule:
+    # Cada 20 min de lunes a viernes entre 07:00 y 17:00 UTC
+    # (cubre horario BME 09:00-17:45 Madrid todo el año; el script filtra la hora exacta)
+    - cron: "*/20 7-17 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Simular sin enviar correos (true/false)"
+        required: false
+        default: "false"
+      force:
+        description: "Ignorar horario BME (true/false)"
+        required: false
+        default: "false"
+
+jobs:
+  alertas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout StockLab
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar motor de alertas por correo
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_FROM_EMAIL: ${{ secrets.ALERT_FROM_EMAIL }}
+          APP_PUBLIC_URL: ${{ secrets.APP_PUBLIC_URL }}
+        run: |
+          FLAGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then FLAGS="$FLAGS --dry-run"; fi
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then FLAGS="$FLAGS --force"; fi
+          python enviar_alertas.py $FLAGS

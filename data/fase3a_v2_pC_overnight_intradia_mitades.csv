@@ -1,0 +1,13 @@
+universo,tramo,ic_diseno,t_diseno,ic_oos,t_oos,n_fechas_diseno,n_fechas_oos
+IBEX 35,Overnight [C_t -> O_t+1],-0.0729,-8.87,-0.011,-0.8,895,345
+IBEX 35,Intradía [O_t+1 -> C_t+1],0.0316,3.62,0.0106,0.87,895,345
+IBEX 35,Total [C_t -> C_t+1],-0.0029,-0.32,-0.0025,-0.2,895,345
+Tercil ALTA Liquidez,Overnight [C_t -> O_t+1],-0.0682,-8.75,0.002,0.15,895,345
+Tercil ALTA Liquidez,Intradía [O_t+1 -> C_t+1],0.0301,3.62,0.0037,0.33,895,345
+Tercil ALTA Liquidez,Total [C_t -> C_t+1],-0.0035,-0.42,-0.0053,-0.45,895,345
+Tercil BAJA Liquidez,Overnight [C_t -> O_t+1],-0.0928,-15.42,-0.1038,-10.76,895,345
+Tercil BAJA Liquidez,Intradía [O_t+1 -> C_t+1],0.0255,4.04,0.0321,3.41,895,345
+Tercil BAJA Liquidez,Total [C_t -> C_t+1],-0.0861,-13.97,-0.0817,-8.58,895,345
+Total Universo,Overnight [C_t -> O_t+1],-0.0582,-13.39,-0.0312,-4.78,895,345
+Total Universo,Intradía [O_t+1 -> C_t+1],0.0224,4.94,0.0126,1.86,895,345
+Total Universo,Total [C_t -> C_t+1],-0.0357,-7.48,-0.0299,-4.24,895,345

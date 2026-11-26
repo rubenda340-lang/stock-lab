@@ -1,0 +1,29 @@
+name: StockLab · CI Calidad y Contratos
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout StockLab
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compilar todos los módulos Python
+        run: python -m compileall -q app.py market_data.py enviar_alertas.py views services database components utils scripts
+
+      - name: Ejecutar tests de contratos críticos
+        run: python -m unittest tests.test_c26_congelado_fase1 tests.test_higiene_predicciones

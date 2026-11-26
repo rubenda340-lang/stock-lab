@@ -1,0 +1,10 @@
+horizonte,regla_ejecucion,n_muestras,spearman_ic,t_stat_nw,p_val,hit_sign_pct,ret_d1_pct,ret_d10_pct,spread_d10_d1_pct,exc_d1_pct,exc_d10_pct,spread_excess_pct
+1D,Cierre(t) [Original No Operable],140938,-0.034,-8.51,0.0,42.99,0.192,-0.018,-0.209,0.057,-0.078,-0.135
+1D,Apertura(t+1) [Operable Campana],140938,0.0205,5.18,0.0,45.12,-0.146,-0.095,0.051,-0.208,-0.159,0.049
+1D,Cierre(t+1) [Operable Retardo 1D],140938,-0.0039,-1.0,0.3159,43.92,0.128,0.025,-0.103,-0.016,-0.037,-0.021
+3D,Cierre(t) [Original No Operable],140938,-0.0337,-6.06,0.0,45.4,0.436,0.023,-0.413,0.027,-0.165,-0.193
+3D,Apertura(t+1) [Operable Campana],140938,0.0054,1.01,0.3141,47.86,0.079,-0.041,-0.12,-0.26,-0.233,0.027
+3D,Cierre(t+1) [Operable Retardo 1D],140938,-0.0095,-1.69,0.0904,46.28,0.31,0.086,-0.224,-0.09,-0.105,-0.015
+1S,Cierre(t) [Original No Operable],140938,-0.0314,-4.67,0.0,46.13,0.695,0.054,-0.642,0.018,-0.253,-0.271
+1S,Apertura(t+1) [Operable Campana],140938,0.0,0.0,0.9985,48.15,0.32,0.001,-0.319,-0.285,-0.309,-0.024
+1S,Cierre(t+1) [Operable Retardo 1D],140938,-0.0126,-1.89,0.0593,46.83,0.608,0.117,-0.49,-0.088,-0.192,-0.104

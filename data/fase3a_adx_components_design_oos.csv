@@ -1,0 +1,97 @@
+tramo,horizonte,regimen_adx,componente,n_muestras,n_fechas,spearman_ic,t_stat_nw,p_val_nw,interpretacion
+diseno,1D,low,comp_rsi,38520,895,-0.0359,-5.88,0.0,REVERSION
+diseno,1D,low,comp_macd,38520,895,-0.0245,-3.88,0.0001,REVERSION
+diseno,1D,low,comp_tendencia,38520,895,-0.0247,-3.96,0.0001,REVERSION
+diseno,1D,low,comp_momentum,38520,895,-0.0419,-6.56,0.0,REVERSION
+diseno,1D,trans,comp_rsi,20562,891,-0.0374,-4.53,0.0,REVERSION
+diseno,1D,trans,comp_macd,20562,891,-0.0265,-3.27,0.0011,REVERSION
+diseno,1D,trans,comp_tendencia,20562,891,-0.0289,-3.4,0.0007,REVERSION
+diseno,1D,trans,comp_momentum,20562,891,-0.0416,-5.07,0.0,REVERSION
+diseno,1D,high,comp_rsi,40105,895,-0.0241,-3.87,0.0001,REVERSION
+diseno,1D,high,comp_macd,40105,895,-0.0284,-4.58,0.0,REVERSION
+diseno,1D,high,comp_tendencia,40105,895,-0.0202,-2.97,0.003,REVERSION
+diseno,1D,high,comp_momentum,40105,895,-0.0427,-6.76,0.0,REVERSION
+diseno,3D,low,comp_rsi,38520,895,-0.0249,-3.03,0.0025,REVERSION
+diseno,3D,low,comp_macd,38520,895,-0.0186,-2.12,0.0343,REVERSION
+diseno,3D,low,comp_tendencia,38520,895,-0.0188,-2.19,0.0285,REVERSION
+diseno,3D,low,comp_momentum,38520,895,-0.034,-4.11,0.0,REVERSION
+diseno,3D,trans,comp_rsi,20562,891,-0.0454,-4.33,0.0,REVERSION
+diseno,3D,trans,comp_macd,20562,891,-0.0378,-3.46,0.0006,REVERSION
+diseno,3D,trans,comp_tendencia,20562,891,-0.0396,-3.62,0.0003,REVERSION
+diseno,3D,trans,comp_momentum,20562,891,-0.0516,-4.92,0.0,REVERSION
+diseno,3D,high,comp_rsi,40105,895,-0.0301,-3.28,0.0011,REVERSION
+diseno,3D,high,comp_macd,40105,895,-0.038,-4.39,0.0,REVERSION
+diseno,3D,high,comp_tendencia,40105,895,-0.0262,-2.62,0.009,REVERSION
+diseno,3D,high,comp_momentum,40105,895,-0.0507,-5.74,0.0,REVERSION
+diseno,1S,low,comp_rsi,38520,895,-0.018,-1.9,0.058,RUIDO (|t|<2)
+diseno,1S,low,comp_macd,38520,895,-0.0215,-2.09,0.0368,REVERSION
+diseno,1S,low,comp_tendencia,38520,895,-0.0129,-1.27,0.206,RUIDO (|t|<2)
+diseno,1S,low,comp_momentum,38520,895,-0.0294,-3.2,0.0014,REVERSION
+diseno,1S,trans,comp_rsi,20562,891,-0.0353,-2.92,0.0036,REVERSION
+diseno,1S,trans,comp_macd,20562,891,-0.0314,-2.45,0.0144,REVERSION
+diseno,1S,trans,comp_tendencia,20562,891,-0.0374,-2.97,0.0031,REVERSION
+diseno,1S,trans,comp_momentum,20562,891,-0.0393,-3.28,0.0011,REVERSION
+diseno,1S,high,comp_rsi,40105,895,-0.0329,-2.79,0.0054,REVERSION
+diseno,1S,high,comp_macd,40105,895,-0.0445,-4.2,0.0,REVERSION
+diseno,1S,high,comp_tendencia,40105,895,-0.0327,-2.57,0.0103,REVERSION
+diseno,1S,high,comp_momentum,40105,895,-0.0528,-4.87,0.0,REVERSION
+diseno,1M,low,comp_rsi,38520,895,0.0002,0.01,0.9882,RUIDO (|t|<2)
+diseno,1M,low,comp_macd,38520,895,-0.0122,-0.83,0.4088,RUIDO (|t|<2)
+diseno,1M,low,comp_tendencia,38520,895,-0.0036,-0.23,0.8211,RUIDO (|t|<2)
+diseno,1M,low,comp_momentum,38520,895,-0.0155,-1.3,0.1933,RUIDO (|t|<2)
+diseno,1M,trans,comp_rsi,20562,891,-0.024,-1.49,0.136,RUIDO (|t|<2)
+diseno,1M,trans,comp_macd,20562,891,0.0024,0.17,0.865,RUIDO (|t|<2)
+diseno,1M,trans,comp_tendencia,20562,891,-0.0349,-1.83,0.0672,RUIDO (|t|<2)
+diseno,1M,trans,comp_momentum,20562,891,-0.0255,-1.77,0.077,RUIDO (|t|<2)
+diseno,1M,high,comp_rsi,40105,895,-0.0117,-0.59,0.5532,RUIDO (|t|<2)
+diseno,1M,high,comp_macd,40105,895,-0.0424,-2.71,0.0069,REVERSION
+diseno,1M,high,comp_tendencia,40105,895,-0.0225,-1.0,0.3198,RUIDO (|t|<2)
+diseno,1M,high,comp_momentum,40105,895,-0.0333,-1.94,0.0532,RUIDO (|t|<2)
+oos,1D,low,comp_rsi,15543,345,-0.0222,-2.5,0.0129,REVERSION
+oos,1D,low,comp_macd,15543,345,-0.0465,-4.79,0.0,REVERSION
+oos,1D,low,comp_tendencia,15543,345,-0.0051,-0.54,0.5878,RUIDO (|t|<2)
+oos,1D,low,comp_momentum,15543,345,-0.0335,-3.57,0.0004,REVERSION
+oos,1D,trans,comp_rsi,8311,345,-0.0122,-0.97,0.3332,RUIDO (|t|<2)
+oos,1D,trans,comp_macd,8311,345,-0.0413,-3.26,0.0012,REVERSION
+oos,1D,trans,comp_tendencia,8311,345,0.0059,0.44,0.6598,RUIDO (|t|<2)
+oos,1D,trans,comp_momentum,8311,345,-0.0294,-2.25,0.0248,REVERSION
+oos,1D,high,comp_rsi,15637,345,-0.0261,-2.51,0.0126,REVERSION
+oos,1D,high,comp_macd,15637,345,-0.0276,-2.74,0.0065,REVERSION
+oos,1D,high,comp_tendencia,15637,345,-0.0154,-1.41,0.1585,RUIDO (|t|<2)
+oos,1D,high,comp_momentum,15637,345,-0.0351,-3.44,0.0006,REVERSION
+oos,3D,low,comp_rsi,15543,345,-0.0104,-0.8,0.4221,RUIDO (|t|<2)
+oos,3D,low,comp_macd,15543,345,-0.0524,-3.72,0.0002,REVERSION
+oos,3D,low,comp_tendencia,15543,345,0.0151,1.09,0.278,RUIDO (|t|<2)
+oos,3D,low,comp_momentum,15543,345,-0.0252,-2.05,0.0407,REVERSION
+oos,3D,trans,comp_rsi,8311,345,-0.0105,-0.65,0.5176,RUIDO (|t|<2)
+oos,3D,trans,comp_macd,8311,345,-0.0476,-2.6,0.0098,REVERSION
+oos,3D,trans,comp_tendencia,8311,345,0.0071,0.42,0.6721,RUIDO (|t|<2)
+oos,3D,trans,comp_momentum,8311,345,-0.0359,-2.15,0.0324,REVERSION
+oos,3D,high,comp_rsi,15637,345,-0.0362,-2.52,0.0121,REVERSION
+oos,3D,high,comp_macd,15637,345,-0.0477,-3.3,0.0011,REVERSION
+oos,3D,high,comp_tendencia,15637,345,-0.0257,-1.73,0.0844,RUIDO (|t|<2)
+oos,3D,high,comp_momentum,15637,345,-0.0496,-3.46,0.0006,REVERSION
+oos,1S,low,comp_rsi,15543,345,0.0001,0.0,0.9964,RUIDO (|t|<2)
+oos,1S,low,comp_macd,15543,345,-0.0582,-3.61,0.0003,REVERSION
+oos,1S,low,comp_tendencia,15543,345,0.0299,1.9,0.0582,RUIDO (|t|<2)
+oos,1S,low,comp_momentum,15543,345,-0.021,-1.66,0.0984,RUIDO (|t|<2)
+oos,1S,trans,comp_rsi,8311,345,0.0102,0.54,0.591,RUIDO (|t|<2)
+oos,1S,trans,comp_macd,8311,345,-0.0411,-1.77,0.0769,RUIDO (|t|<2)
+oos,1S,trans,comp_tendencia,8311,345,0.0329,1.71,0.0889,RUIDO (|t|<2)
+oos,1S,trans,comp_momentum,8311,345,-0.0202,-1.07,0.2833,RUIDO (|t|<2)
+oos,1S,high,comp_rsi,15637,345,-0.0395,-2.24,0.0254,REVERSION
+oos,1S,high,comp_macd,15637,345,-0.062,-3.44,0.0007,REVERSION
+oos,1S,high,comp_tendencia,15637,345,-0.0267,-1.52,0.1302,RUIDO (|t|<2)
+oos,1S,high,comp_momentum,15637,345,-0.0565,-3.2,0.0015,REVERSION
+oos,1M,low,comp_rsi,15543,345,0.0774,3.91,0.0001,CONTINUACION
+oos,1M,low,comp_macd,15543,345,-0.0106,-0.54,0.5923,RUIDO (|t|<2)
+oos,1M,low,comp_tendencia,15543,345,0.1085,4.69,0.0,CONTINUACION
+oos,1M,low,comp_momentum,15543,345,0.039,2.62,0.0091,CONTINUACION
+oos,1M,trans,comp_rsi,8311,345,0.0927,2.86,0.0044,CONTINUACION
+oos,1M,trans,comp_macd,8311,345,-0.0027,-0.12,0.9081,RUIDO (|t|<2)
+oos,1M,trans,comp_tendencia,8311,345,0.1022,2.97,0.0032,CONTINUACION
+oos,1M,trans,comp_momentum,8311,345,0.0504,2.0,0.0465,RUIDO (|t|<2)
+oos,1M,high,comp_rsi,15637,345,0.0032,0.17,0.8671,RUIDO (|t|<2)
+oos,1M,high,comp_macd,15637,345,-0.0556,-2.6,0.0097,REVERSION
+oos,1M,high,comp_tendencia,15637,345,-0.0012,-0.05,0.9629,RUIDO (|t|<2)
+oos,1M,high,comp_momentum,15637,345,-0.0435,-2.21,0.028,REVERSION

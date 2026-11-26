@@ -1,0 +1,7 @@
+universo,tramo,ic_diseno,se_diseno,t_diseno,ic_oos,se_oos,t_oos,diff_diseno_oos,se_diff,z_contrast,p_valor_diff,conclusion_estadistica
+IBEX 35,Intradía [O_t+1 -> C_t+1],0.0316,0.0087,3.62,0.0106,0.0122,0.87,0.021,0.015,1.4,0.1612,Inconcluyente (No sig.)
+IBEX 35,Overnight [C_t -> O_t+1],-0.0729,0.0082,-8.87,-0.011,0.0138,-0.8,-0.0619,0.016,-3.86,0.0001,Inestable (Significativo)
+IBEX 35,Total [C_t -> C_t+1],-0.0029,0.0089,-0.32,-0.0025,0.0127,-0.2,-0.0003,0.0156,-0.02,0.983,Inconcluyente (No sig.)
+Tercil ALTA Liquidez,Intradía [O_t+1 -> C_t+1],0.0301,0.0083,3.62,0.0037,0.0113,0.33,0.0264,0.014,1.88,0.0601,Inconcluyente (No sig.)
+Tercil ALTA Liquidez,Overnight [C_t -> O_t+1],-0.0682,0.0078,-8.75,0.002,0.0129,0.15,-0.0702,0.0151,-4.66,0.0,Inestable (Significativo)
+Tercil ALTA Liquidez,Total [C_t -> C_t+1],-0.0035,0.0085,-0.42,-0.0053,0.0118,-0.45,0.0018,0.0145,0.12,0.9017,Inconcluyente (No sig.)

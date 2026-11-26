@@ -1,0 +1,5 @@
+variante,meses_observados,mean_ic_mensual,t_stat_nw,sd_ic_mensual,se_correcto_media,meses_para_detectar_ic_003,anos_para_detectar_ic_003
+1. Momentum 12-1 (252d a 21d),59,0.0604,1.83,0.2535,0.033,286,23.8
+2. Low-Vol 60d (std 60d invertida),68,-0.0321,-0.95,0.2786,0.0338,346,28.8
+3. Reversal 21d (21d a 1d invertido),70,-0.0429,-1.45,0.2475,0.0296,273,22.8
+4. Momentum 6-1 (126d a 21d),65,0.0247,0.94,0.2118,0.0263,200,16.7

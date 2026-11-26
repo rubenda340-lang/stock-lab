@@ -1,0 +1,41 @@
+# Variables de entorno (NUNCA subir secretos)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# IDE
+.vscode/
+.idea/
+
+# Base de datos SQLite
+*.db
+
+# BD viva: nunca versionar
+stocklab.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Cache de datos
+data/cache/
+data/registro_ajustes_cache.csv
+data/backtest_cache_6y.parquet
+
+# Archivos temporales
+scratch_*
+*.tmp
+*.lock
+
+# Copias de seguridad
+backups/
+stocklab_backups/
+*.bak

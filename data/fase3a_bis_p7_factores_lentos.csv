@@ -1,0 +1,5 @@
+variante,n_meses_efectivos,spearman_ic_mensual,t_stat,p_val,se_muestral,potencia_para_ic_003
+1. Momentum 12-1 (252d a 21d),59,0.0604,1.83,0.0719,0.1204,INSUFICIENTE (N=55 meses requiere |IC| >= 0.27 para t>=2.0)
+2. Low-Vol 60d (std 60d invertida),68,-0.0321,-0.95,0.3444,0.1204,INSUFICIENTE (N=55 meses requiere |IC| >= 0.27 para t>=2.0)
+3. Reversal 21d (21d a 1d invertido),70,-0.0429,-1.45,0.1528,0.1204,INSUFICIENTE (N=55 meses requiere |IC| >= 0.27 para t>=2.0)
+4. Momentum 6-1 (126d a 21d),65,0.0247,0.94,0.3515,0.1204,INSUFICIENTE (N=55 meses requiere |IC| >= 0.27 para t>=2.0)

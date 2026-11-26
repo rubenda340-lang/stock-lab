@@ -1,0 +1,4 @@
+estimador_vs_baseline,mejora_qlike_media,ci95_low,ci95_high,t_stat_dm,p_valor_dm,es_significativo_supera_baseline
+EWMA (lambda=0.94),0.012,-0.0007,0.0248,1.79,0.0729,NO
+EWMA (lambda=0.97),0.0286,0.0192,0.0387,5.75,0.0,SÍ
+ATR 14d / 1.6,-0.0166,-0.0337,0.0019,-1.72,0.0862,NO

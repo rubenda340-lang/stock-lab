@@ -1,0 +1,3 @@
+serie,overnight_mean_pct,intraday_mean_pct,total_mean_pct,tipo
+^IBEX (Índice oficial precio),0.022498845086008062,0.05120462093984255,0.0732131351011814,Price Return
+IBEX 35 Constituyentes (Equiponderado),0.07874954400401217,0.010985902016305695,0.08794348227269552,Total Return (auto_adjust)

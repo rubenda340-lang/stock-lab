@@ -1,0 +1,9 @@
+horizonte,tramo,n_obs,p_sube_dado_no_zero_pct,motor_acierto_signo_dir_pct,azar_estrat_acierto_signo_pct,motor_acierto_3clases_pct,azar_estrat_3clases_pct,ventaja_motor_vs_azar_estrat_pp
+1D,Diseño,99187,50.03,49.07,49.65,62.27,62.27,0.0
+1D,OOS,39491,50.56,48.91,49.88,64.92,64.92,-0.0
+3D,Diseño,99187,50.23,49.19,49.77,59.59,59.59,0.0
+3D,OOS,39491,51.12,48.41,50.43,61.98,61.98,-0.0
+1S,Diseño,99187,50.33,48.85,50.32,59.1,59.1,0.0
+1S,OOS,39491,51.8,48.25,50.71,61.4,61.4,0.0
+1M,Diseño,99187,50.56,47.37,50.07,61.54,61.51,0.02
+1M,OOS,39491,54.06,49.5,51.08,63.67,63.67,0.0

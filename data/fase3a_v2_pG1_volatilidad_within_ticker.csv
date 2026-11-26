@@ -1,0 +1,5 @@
+estimador,n_tickers_ibex,mediana_spearman_within,pct_tickers_ic_positivo,qlike_mejora_vs_baseline
+1. Baseline Ingenuo (std 252d),35,0.0939,85.7,0.0
+2. EWMA (lambda=0.94),35,0.1609,100.0,0.0113
+3. EWMA (lambda=0.97),35,0.159,100.0,0.0282
+4. ATR 14d / 1.6,35,0.1886,100.0,-0.0189

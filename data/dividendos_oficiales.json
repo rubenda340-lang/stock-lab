@@ -1,0 +1,42 @@
+{
+  "_comentario": "Dividendos oficiales de Nivel 1 (Confianza 100). Fuentes: BME, CNMV, comunicados oficiales de empresa. Editar manualmente cuando se publiquen nuevas fechas confirmadas.",
+  "_formato": "ex_dividend_date e pago_date en ISO 8601 (YYYY-MM-DD). importe en EUR por acción.",
+  "dividendos": [
+    {
+      "ticker": "REP.MC",
+      "empresa": "Repsol",
+      "ex_dividend_date": "2026-07-06",
+      "pago_date": "2026-07-08",
+      "importe": 0.413,
+      "nivel_confianza": 100,
+      "fuente": "Comunicado oficial Repsol — Junta General Accionistas 2026"
+    },
+    {
+      "ticker": "IBE.MC",
+      "empresa": "Iberdrola",
+      "ex_dividend_date": "2026-07-06",
+      "pago_date": "2026-07-29",
+      "importe": 0.259,
+      "nivel_confianza": 100,
+      "fuente": "Comunicado oficial Iberdrola — Dividendo complementario 2025"
+    },
+    {
+      "ticker": "SAN.MC",
+      "empresa": "Banco Santander",
+      "ex_dividend_date": "2026-10-30",
+      "pago_date": "2026-11-03",
+      "importe": 0.10,
+      "nivel_confianza": 100,
+      "fuente": "Comunicado oficial Banco Santander — Q3 2026"
+    },
+    {
+      "ticker": "BBVA.MC",
+      "empresa": "BBVA",
+      "ex_dividend_date": "2026-10-08",
+      "pago_date": "2026-10-10",
+      "importe": 0.29,
+      "nivel_confianza": 100,
+      "fuente": "Comunicado oficial BBVA — Dividendo a cuenta octubre 2026"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+horizonte,criterio,grupo,n_muestras,spearman_ic,t_stat_nw,p_val,hit_sign_pct
+1D,Liquidez € (20d),Tercil ALTA,47393,-0.005,-0.72,0.4746,49.39
+1D,Liquidez € (20d),Tercil MEDIA,46655,-0.0196,-3.57,0.0004,46.47
+1D,Liquidez € (20d),Tercil BAJA,46890,-0.0849,-17.46,0.0,33.07
+1D,Capitalización,IBEX35,43104,-0.004,-0.54,0.5904,49.48
+1D,Capitalización,CONTINUO,97834,-0.05,-12.67,0.0,40.13
+3D,Liquidez € (20d),Tercil ALTA,47393,-0.0071,-0.72,0.4721,49.7
+3D,Liquidez € (20d),Tercil MEDIA,46655,-0.0202,-2.79,0.0053,47.81
+3D,Liquidez € (20d),Tercil BAJA,46890,-0.0792,-11.79,0.0,38.67
+3D,Capitalización,IBEX35,43104,-0.0066,-0.63,0.526,49.9
+3D,Capitalización,CONTINUO,97834,-0.0489,-8.75,0.0,43.42
+1S,Liquidez € (20d),Tercil ALTA,47393,-0.0062,-0.52,0.6023,49.65
+1S,Liquidez € (20d),Tercil MEDIA,46655,-0.0217,-2.49,0.0128,48.11
+1S,Liquidez € (20d),Tercil BAJA,46890,-0.0683,-8.36,0.0,40.59
+1S,Capitalización,IBEX35,43104,-0.005,-0.4,0.6913,49.89
+1S,Capitalización,CONTINUO,97834,-0.0463,-6.7,0.0,44.47

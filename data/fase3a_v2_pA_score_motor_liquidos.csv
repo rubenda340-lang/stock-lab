@@ -1,0 +1,3 @@
+universo,tramo,ic_diseno,t_nw_diseno,p_val_diseno,n_fechas_diseno,ic_oos,t_nw_oos,p_val_oos,n_fechas_oos,cumple_criterio_t3
+IBEX 35,Intradía Open(t+1)->Close(t+1),0.0316,3.62,0.0003,895,0.0106,0.87,0.3832,345,False
+Tercil ALTA Liquidez,Intradía Open(t+1)->Close(t+1),0.0301,3.62,0.0003,895,0.0037,0.33,0.7447,345,False

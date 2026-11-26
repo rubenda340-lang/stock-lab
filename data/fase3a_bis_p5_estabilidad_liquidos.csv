@@ -1,0 +1,7 @@
+universo,ano,n_muestras,spearman_ic,t_stat_nw,p_val
+IBEX35 + Tercil Alto,2021,2434,-0.0181,-0.59,0.5552
+IBEX35 + Tercil Alto,2022,9752,-0.0135,-0.82,0.4149
+IBEX35 + Tercil Alto,2023,9439,0.0046,0.29,0.7704
+IBEX35 + Tercil Alto,2024,9665,-0.0069,-0.45,0.6514
+IBEX35 + Tercil Alto,2025,9800,0.0036,0.25,0.8031
+IBEX35 + Tercil Alto,2026,6834,-0.0084,-0.48,0.6293

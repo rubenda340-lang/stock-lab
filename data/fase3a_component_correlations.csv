@@ -1,0 +1,5 @@
+,comp_rsi,comp_macd,comp_tendencia,comp_momentum
+comp_rsi,1.0,0.577,0.92,0.854
+comp_macd,0.577,1.0,0.412,0.676
+comp_tendencia,0.92,0.412,1.0,0.762
+comp_momentum,0.854,0.676,0.762,1.0

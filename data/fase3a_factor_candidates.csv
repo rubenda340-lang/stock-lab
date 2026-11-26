@@ -1,0 +1,16 @@
+horizonte,factor_candidato,spearman_ic,t_stat_nw,p_val,interpretacion
+1D,r_-1 / sigma,-0.0671,-17.94,0.0,REVERSION FUERTE
+1D,r_-5 / sigma,-0.0404,-10.74,0.0,REVERSION FUERTE
+1D,r_-20 / sigma,-0.0148,-3.95,0.0001,REVERSION FUERTE
+1D,r_-1 residual (beta 60),-0.0645,-18.36,0.0,REVERSION FUERTE
+1D,r_-5 residual (beta 60),-0.0364,-10.23,0.0,REVERSION FUERTE
+3D,r_-1 / sigma,-0.053,-14.17,0.0,REVERSION FUERTE
+3D,r_-5 / sigma,-0.0406,-7.96,0.0,REVERSION FUERTE
+3D,r_-20 / sigma,-0.015,-2.79,0.0054,DEBIL / RUIDO
+3D,r_-1 residual (beta 60),-0.0491,-13.79,0.0,REVERSION FUERTE
+3D,r_-5 residual (beta 60),-0.0353,-7.38,0.0,REVERSION FUERTE
+1S,r_-1 / sigma,-0.0404,-11.26,0.0,REVERSION FUERTE
+1S,r_-5 / sigma,-0.0361,-5.98,0.0,REVERSION FUERTE
+1S,r_-20 / sigma,-0.0147,-2.23,0.0262,DEBIL / RUIDO
+1S,r_-1 residual (beta 60),-0.0374,-11.26,0.0,REVERSION FUERTE
+1S,r_-5 residual (beta 60),-0.0324,-5.8,0.0,REVERSION FUERTE
