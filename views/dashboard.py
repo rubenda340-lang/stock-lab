@@ -527,7 +527,8 @@ def show():
         box-shadow: 0 0 16px -4px rgba(56, 189, 248, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
     }
 
-    /* Align segmented controls inside headers to the right on a single crisp row */
+    /* Align segmented controls inside headers flush-right on a single crisp row */
+    div[data-testid="stElementContainer"]:has(div[data-testid="stSegmentedControl"]),
     div[data-testid="stSegmentedControl"] {
         display: flex !important;
         justify-content: flex-end !important;
@@ -538,6 +539,7 @@ def show():
         display: flex !important;
         flex-wrap: nowrap !important;
         justify-content: flex-end !important;
+        margin-left: auto !important;
         width: auto !important;
         gap: 4px !important;
     }

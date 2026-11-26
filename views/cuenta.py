@@ -42,6 +42,47 @@ def mostrar_modal_cuenta() -> None:
         )
 
     st.markdown(
+        """
+        <style>
+            div[data-testid="stDialog"] div[data-testid="stForm"] {
+                background: rgba(11, 17, 30, 0.72) !important;
+                border: 1px solid rgba(148, 163, 184, 0.14) !important;
+                border-radius: 14px !important;
+                padding: 18px 20px !important;
+            }
+            div[data-testid="stDialog"] button[kind="primaryFormSubmit"],
+            div[data-testid="stDialog"] div[data-testid="stFormSubmitButton"] button {
+                background: linear-gradient(135deg, rgba(56, 189, 248, 0.24), rgba(99, 102, 241, 0.20)) !important;
+                border: 1px solid rgba(56, 189, 248, 0.55) !important;
+                color: #e0f6ff !important;
+                font-weight: 700 !important;
+                border-radius: 10px !important;
+                box-shadow: 0 0 20px -6px rgba(56, 189, 248, 0.45) !important;
+            }
+            div[data-testid="stDialog"] button[kind="primaryFormSubmit"]:hover,
+            div[data-testid="stDialog"] div[data-testid="stFormSubmitButton"] button:hover {
+                background: linear-gradient(135deg, rgba(56, 189, 248, 0.34), rgba(99, 102, 241, 0.28)) !important;
+                border-color: rgba(125, 211, 252, 0.78) !important;
+                color: #ffffff !important;
+            }
+            div[data-testid="stDialog"] .st-key-cuenta_btn_logout button {
+                background: rgba(239, 68, 68, 0.11) !important;
+                border: 1px solid rgba(248, 113, 113, 0.36) !important;
+                color: #fca5a5 !important;
+                font-weight: 600 !important;
+                border-radius: 10px !important;
+            }
+            div[data-testid="stDialog"] .st-key-cuenta_btn_logout button:hover {
+                background: rgba(239, 68, 68, 0.20) !important;
+                border-color: rgba(248, 113, 113, 0.62) !important;
+                color: #fecaca !important;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
         f"""
         <div style="padding:14px 16px;border-radius:12px;background:rgba(15,23,42,0.75);
                     border:1px solid rgba(148,163,184,0.16);display:flex;justify-content:space-between;
@@ -80,7 +121,7 @@ def mostrar_modal_cuenta() -> None:
             disabled=not email_activo,
         )
 
-        c1, c2 = st.columns(2)
+        c1, c2 = st.columns(2, gap="large")
         with c1:
             st.markdown("**Radar Watchlist**")
             wl_alc = st.checkbox(
@@ -100,11 +141,6 @@ def mostrar_modal_cuenta() -> None:
                 step=0.5,
                 value=float(prefs.get("umbral_wl_cerca_pct", 3.0)),
                 disabled=not (email_activo and wl_cerca),
-            )
-            resumen_diario = st.checkbox(
-                "Enviar resumen diario al cierre BME (18:35)",
-                value=bool(prefs.get("resumen_diario", False)),
-                disabled=not email_activo,
             )
 
         with c2:
@@ -144,6 +180,13 @@ def mostrar_modal_cuenta() -> None:
                 disabled=not (email_activo and (av_real or av_sim)),
             )
 
+        st.markdown("<div style='height:4px;border-top:1px solid rgba(148,163,184,0.10);margin:10px 0 6px 0;'></div>", unsafe_allow_html=True)
+        resumen_diario = st.toggle(
+            "Enviar resumen diario al cierre BME (18:35)",
+            value=bool(prefs.get("resumen_diario", False)),
+            disabled=not email_activo,
+        )
+
         guardar_btn = st.form_submit_button("Guardar Preferencias", type="primary", use_container_width=True)
 
     if guardar_btn:
@@ -167,17 +210,23 @@ def mostrar_modal_cuenta() -> None:
 
     # ── Acciones de cuenta y RGPD (solo cuando la sesión nube está activa) ─
     if en_nube and user:
-        st.divider()
-        col_a1, col_a2 = st.columns(2)
-        with col_a1:
-            if st.button("Enviar correo para cambiar contraseña", use_container_width=True):
-                ok_r, msg_r = send_password_reset(user.get("email", ""))
-                if ok_r:
-                    st.success(msg_r)
-                else:
-                    st.error(msg_r)
-        with col_a2:
-            if st.button("Cerrar Sesión", type="primary", use_container_width=True):
+        st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
+        es_email_auth = str(user.get("provider") or "email").lower() == "email"
+        if es_email_auth:
+            col_a1, col_a2 = st.columns(2, gap="medium")
+            with col_a1:
+                if st.button("Enviar correo para cambiar contraseña", key="cuenta_btn_pwd", use_container_width=True):
+                    ok_r, msg_r = send_password_reset(user.get("email", ""))
+                    if ok_r:
+                        st.success(msg_r)
+                    else:
+                        st.error(msg_r)
+            with col_a2:
+                if st.button("Cerrar Sesión", key="cuenta_btn_logout", use_container_width=True):
+                    sign_out()
+                    st.rerun()
+        else:
+            if st.button("Cerrar Sesión", key="cuenta_btn_logout", use_container_width=True):
                 sign_out()
                 st.rerun()
 

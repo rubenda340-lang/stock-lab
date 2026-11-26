@@ -1812,9 +1812,12 @@ def show():
         position: relative !important;
         overflow: hidden !important;
         width: 100% !important;
-        min-height: 118px !important;
-        padding: 18px 20px !important;
-        display: block !important;
+        min-height: 112px !important;
+        padding: 18px 22px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: center !important;
         text-align: left !important;
         background: var(--sl-surface-glass) !important;
         border: 1px solid var(--sl-border-default) !important;
@@ -1845,13 +1848,24 @@ def show():
         right: 8% !important;
         opacity: 1 !important;
     }
+    .stTabs [class*="st-key-btn_"] button > div,
     .stTabs [class*="st-key-btn_"] button [data-testid="stMarkdownContainer"] {
-        width: 100%;
-        text-align: left;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+        text-align: left !important;
     }
     .stTabs [class*="st-key-btn_"] button p {
+        width: 100% !important;
+        text-align: left !important;
         margin: 0 !important;
         line-height: 1.4 !important;
+    }
+    .stTabs [class*="st-key-btn_"] button p:first-child {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
     }
     .stTabs [class*="st-key-btn_"] button p:first-child strong {
         color: var(--sl-accent-bright) !important;
@@ -1859,12 +1873,15 @@ def show():
         font-variant-numeric: tabular-nums;
     }
     .stTabs [class*="st-key-btn_"] button p:first-child span:last-child:not(:has(strong)) {
-        float: right;
-        padding: 1px 7px;
+        margin-left: auto;
+        padding: 2px 8px;
         border-radius: 999px;
         background: var(--sl-warn-soft);
+        border: 1px solid rgba(251, 191, 36, 0.25);
         color: var(--sl-warn) !important;
-        font: 600 0.69rem/1.5 var(--sl-font-body);
+        font: 700 0.67rem/1.4 var(--sl-font-body);
+        letter-spacing: 0.04em;
+        white-space: nowrap;
     }
     .stTabs [class*="st-key-btn_"] button p:nth-child(2) {
         margin: 7px 0 3px !important;
