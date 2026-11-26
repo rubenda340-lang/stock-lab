@@ -136,14 +136,14 @@ def _inyectar_estilos_auth() -> None:
     _render_html(
         """
         <style>
-            /* Contenedor centrado de ancho editorial para máxima simetría sin recorte vertical */
+            /* Contenedor editorial amplio (ocupa ~80% en monitores panorámicos sin estirar el formulario) */
             section[data-testid="stMain"] [data-testid="stMainBlockContainer"] {
-                max-width: 1180px !important;
+                max-width: 1420px !important;
                 margin: 0 auto !important;
-                padding: clamp(1.2rem, 3.5vh, 2.8rem) clamp(1.2rem, 3vw, 2.5rem) 1.5rem !important;
+                padding: clamp(1.5rem, 4.5vh, 3.4rem) clamp(1.5rem, 4vw, 3.5rem) 1.8rem !important;
             }
 
-            /* Fondo ambiental sutil con cuadrícula fintech desvanecida */
+            /* Fondo ambiental sutil con cuadrícula fintech panorámica */
             section[data-testid="stMain"]::after {
                 content: "";
                 position: fixed;
@@ -153,8 +153,8 @@ def _inyectar_estilos_auth() -> None:
                 background-image:
                     linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
-                background-size: 44px 44px;
-                mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 10%, transparent 80%);
+                background-size: 46px 46px;
+                mask-image: radial-gradient(ellipse 88% 78% at 50% 42%, #000 18%, transparent 88%);
             }
 
             /* ── Columna Izquierda: Identidad Institucional ────────────── */
@@ -197,9 +197,9 @@ def _inyectar_estilos_auth() -> None:
 
             .sl-hero-headline {
                 font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-                font-size: clamp(2.05rem, 3.0vw, 2.75rem);
+                font-size: clamp(2.2rem, 3.2vw, 3.05rem);
                 font-weight: 800;
-                line-height: 1.12;
+                line-height: 1.11;
                 letter-spacing: -0.04em;
                 color: #f8fafc;
                 margin: 0 0 16px 0;
@@ -213,19 +213,19 @@ def _inyectar_estilos_auth() -> None:
             }
             .sl-hero-copy {
                 font-family: 'Inter', sans-serif;
-                font-size: 0.94rem;
-                line-height: 1.60;
+                font-size: 0.98rem;
+                line-height: 1.62;
                 color: #94a3b8;
-                margin: 0 0 20px 0;
-                max-width: 520px;
+                margin: 0 0 24px 0;
+                max-width: 620px;
             }
 
             /* Cuadrícula 2x2 simétrica con iconos SVG de trazo fino */
             .sl-feat-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 11px;
-                margin-bottom: 18px;
+                gap: 14px;
+                margin-bottom: 22px;
             }
             @media (max-width: 640px) {
                 .sl-feat-grid { grid-template-columns: 1fr; }
@@ -234,8 +234,8 @@ def _inyectar_estilos_auth() -> None:
                 background: linear-gradient(155deg, rgba(20, 31, 50, 0.72), rgba(10, 16, 28, 0.92));
                 border: 1px solid rgba(148, 163, 184, 0.12);
                 border-radius: 13px;
-                padding: 15px 16px;
-                min-height: 98px;
+                padding: 17px 18px;
+                min-height: 104px;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -607,7 +607,7 @@ def show_auth_gate() -> None:
     _procesar_callback_oauth()
     _inyectar_estilos_auth()
 
-    col_left, _, col_right = st.columns([1.14, 0.12, 0.94], vertical_alignment="center")
+    col_left, _, col_right = st.columns([1.28, 0.10, 0.82], vertical_alignment="center")
 
     with col_left:
         _render_panel_marca()
