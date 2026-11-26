@@ -126,15 +126,21 @@ def _procesar_callback_oauth() -> None:
     )
 
 
+def _render_html(markup: str) -> None:
+    """Inyecta HTML puro sin sangrías ni líneas en blanco (evita bloques de código CommonMark en Streamlit)."""
+    clean = "\n".join(line.strip() for line in markup.splitlines() if line.strip())
+    st.markdown(clean, unsafe_allow_html=True)
+
+
 def _inyectar_estilos_auth() -> None:
-    st.markdown(
+    _render_html(
         """
         <style>
-            /* Contenedor centrado de ancho editorial para máxima simetría en pantallas grandes */
+            /* Contenedor centrado de ancho editorial para máxima simetría sin recorte vertical */
             section[data-testid="stMain"] [data-testid="stMainBlockContainer"] {
                 max-width: 1180px !important;
                 margin: 0 auto !important;
-                padding: clamp(2.4rem, 6vh, 4.8rem) clamp(1.2rem, 3vw, 2.5rem) 2.2rem !important;
+                padding: clamp(1.2rem, 3.5vh, 2.8rem) clamp(1.2rem, 3vw, 2.5rem) 1.5rem !important;
             }
 
             /* Fondo ambiental sutil con cuadrícula fintech desvanecida */
@@ -156,7 +162,7 @@ def _inyectar_estilos_auth() -> None:
                 display: inline-flex;
                 align-items: center;
                 gap: 14px;
-                margin-bottom: 24px;
+                margin-bottom: 18px;
             }
             .sl-brand-mark {
                 width: 44px;
@@ -207,10 +213,10 @@ def _inyectar_estilos_auth() -> None:
             }
             .sl-hero-copy {
                 font-family: 'Inter', sans-serif;
-                font-size: 0.95rem;
-                line-height: 1.65;
+                font-size: 0.94rem;
+                line-height: 1.60;
                 color: #94a3b8;
-                margin: 0 0 26px 0;
+                margin: 0 0 20px 0;
                 max-width: 520px;
             }
 
@@ -218,8 +224,8 @@ def _inyectar_estilos_auth() -> None:
             .sl-feat-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 12px;
-                margin-bottom: 22px;
+                gap: 11px;
+                margin-bottom: 18px;
             }
             @media (max-width: 640px) {
                 .sl-feat-grid { grid-template-columns: 1fr; }
@@ -301,8 +307,8 @@ def _inyectar_estilos_auth() -> None:
                 background: linear-gradient(165deg, rgba(20, 31, 50, 0.92) 0%, rgba(10, 15, 27, 0.98) 100%) !important;
                 border: 1px solid rgba(148, 163, 184, 0.18) !important;
                 border-radius: 18px !important;
-                padding: 30px 28px 26px 28px !important;
-                min-height: 452px !important;
+                padding: 24px 26px 22px 26px !important;
+                min-height: 430px !important;
                 box-shadow: 0 22px 54px -14px rgba(0, 0, 0, 0.68), 0 0 38px -16px rgba(56, 189, 248, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
                 position: relative !important;
             }
@@ -469,8 +475,8 @@ def _inyectar_estilos_auth() -> None:
 
             /* Pie institucional simétrico */
             .sl-auth-footer {
-                margin-top: 2.8rem;
-                padding-top: 1.15rem;
+                margin-top: 1.8rem;
+                padding-top: 1rem;
                 border-top: 1px solid rgba(148, 163, 184, 0.12);
                 display: flex;
                 justify-content: space-between;
@@ -482,13 +488,12 @@ def _inyectar_estilos_auth() -> None:
                 color: #64748b;
             }
         </style>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
 def _render_panel_marca() -> None:
-    st.markdown(
+    _render_html(
         """
         <div class="sl-brand-lockup">
             <div class="sl-brand-mark"></div>
@@ -497,17 +502,14 @@ def _render_panel_marca() -> None:
                 <div class="sl-brand-sub">INVESTMENT TERMINAL</div>
             </div>
         </div>
-
         <div class="sl-hero-headline">
             Inversión bursátil,
             <span class="sl-hero-accent">con claridad y control.</span>
         </div>
-
         <p class="sl-hero-copy">
             Centraliza tu cartera real y simulada, monitoriza objetivos en el mercado español
             y recibe alertas automáticas por correo cuando tus valores alcancen niveles clave.
         </p>
-
         <div class="sl-feat-grid">
             <div class="sl-feat-card">
                 <div class="sl-feat-head">
@@ -520,7 +522,6 @@ def _render_panel_marca() -> None:
                     Evolución diaria del patrimonio, plusvalía latente y realizada, liquidez y control de comisiones.
                 </div>
             </div>
-
             <div class="sl-feat-card">
                 <div class="sl-feat-head">
                     <span class="sl-feat-icon" style="background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:#34d399;">
@@ -532,7 +533,6 @@ def _render_panel_marca() -> None:
                     Precios objetivo en caída o ruptura con cálculo exacto de distancia y seguimiento personalizado.
                 </div>
             </div>
-
             <div class="sl-feat-card">
                 <div class="sl-feat-head">
                     <span class="sl-feat-icon" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.28);color:#fbbf24;">
@@ -544,7 +544,6 @@ def _render_panel_marca() -> None:
                     Notificaciones automáticas cuando un objetivo se cumple o una posición supera tu umbral.
                 </div>
             </div>
-
             <div class="sl-feat-card">
                 <div class="sl-feat-head">
                     <span class="sl-feat-icon" style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.28);color:#a78bfa;">
@@ -557,7 +556,6 @@ def _render_panel_marca() -> None:
                 </div>
             </div>
         </div>
-
         <div class="sl-metrics-bar">
             <div class="sl-metric-item">
                 <span class="sl-metric-val">116</span>
@@ -572,8 +570,7 @@ def _render_panel_marca() -> None:
                 <span class="sl-metric-lbl">Espacio privado por cuenta</span>
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -636,7 +633,7 @@ def show_auth_gate() -> None:
 
                 google_url = get_google_oauth_url()
                 if google_url:
-                    st.markdown(
+                    _render_html(
                         f"""
                         <a class="sl-google-btn" href="{_html.escape(google_url)}" target="_blank" rel="noopener noreferrer">
                             <svg width="18" height="18" viewBox="0 0 24 24">
@@ -648,8 +645,7 @@ def show_auth_gate() -> None:
                             Continuar con Google
                         </a>
                         <div class="sl-auth-or">o continúa con tu correo</div>
-                        """,
-                        unsafe_allow_html=True,
+                        """
                     )
 
                 tab_login, tab_signup, tab_magic = st.tabs(["Iniciar Sesión", "Crear Cuenta", "Enlace Mágico"])
@@ -728,12 +724,11 @@ def show_auth_gate() -> None:
                         else:
                             st.error(msg_m)
 
-    st.markdown(
+    _render_html(
         """
         <div class="sl-auth-footer">
             <span>StockLab · Plataforma independiente de análisis y seguimiento bursátil</span>
             <span>Contenido estrictamente informativo; no constituye asesoramiento financiero ni recomendación de inversión.</span>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
