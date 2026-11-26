@@ -314,6 +314,81 @@ def send_password_reset(email: str) -> tuple[bool, str]:
         return False, "Error de red al solicitar la recuperación de contraseña."
 
 
+def send_magic_link(email: str) -> tuple[bool, str]:
+    """Envía un enlace mágico de acceso directo (sin contraseña) vía Supabase Auth."""
+    if not is_cloud_auth_enabled():
+        return False, "Supabase no está configurado en este entorno."
+    email_limpio = (email or "").strip().lower()
+    if not email_limpio or "@" not in email_limpio:
+        return False, "Introduce un correo electrónico válido."
+
+    try:
+        resp = requests.post(
+            f"{get_supabase_url()}/auth/v1/otp",
+            headers=_auth_headers(),
+            json={
+                "email": email_limpio,
+                "create_user": True,
+                "email_redirect_to": get_app_public_url(),
+            },
+            timeout=_HTTP_TIMEOUT,
+        )
+        if resp.status_code in (200, 204):
+            return True, "Te hemos enviado un enlace mágico a tu correo. Haz clic en él para entrar directamente."
+        data = resp.json() if resp.content else {}
+        return False, _traducir_error_auth(data, "No se pudo enviar el enlace mágico.")
+    except requests.RequestException:
+        return False, "Error de red al enviar el enlace mágico."
+
+
+def resend_confirmation_email(email: str) -> tuple[bool, str]:
+    """Reenvía el correo de verificación de cuenta a un usuario ya registrado."""
+    if not is_cloud_auth_enabled():
+        return False, "Supabase no está configurado en este entorno."
+    email_limpio = (email or "").strip().lower()
+    if not email_limpio or "@" not in email_limpio:
+        return False, "Introduce un correo electrónico válido."
+
+    try:
+        resp = requests.post(
+            f"{get_supabase_url()}/auth/v1/resend",
+            headers=_auth_headers(),
+            json={
+                "type": "signup",
+                "email": email_limpio,
+            },
+            timeout=_HTTP_TIMEOUT,
+        )
+        if resp.status_code in (200, 204):
+            return True, "Si tu cuenta está pendiente de confirmación, hemos reenviado el enlace a tu correo."
+        data = resp.json() if resp.content else {}
+        return False, _traducir_error_auth(data, "No se pudo reenviar el correo de confirmación.")
+    except requests.RequestException:
+        return False, "Error de red al reenviar el correo de confirmación."
+
+
+def update_password_with_token(access_token: str, new_password: str) -> tuple[bool, str]:
+    """Actualiza la contraseña de un usuario usando el access_token recibido en el flujo de recuperación."""
+    if not is_cloud_auth_enabled() or not access_token:
+        return False, "Enlace de recuperación inválido o expirado."
+    if not new_password or len(new_password) < 8:
+        return False, "La nueva contraseña debe tener al menos 8 caracteres."
+
+    try:
+        resp = requests.put(
+            f"{get_supabase_url()}/auth/v1/user",
+            headers=_auth_headers(access_token),
+            json={"password": new_password},
+            timeout=_HTTP_TIMEOUT,
+        )
+        if resp.status_code == 200:
+            return True, "Contraseña actualizada correctamente. Ya puedes iniciar sesión con tu nueva clave."
+        data = resp.json() if resp.content else {}
+        return False, _traducir_error_auth(data, "No se pudo actualizar la contraseña.")
+    except requests.RequestException:
+        return False, "Error de conexión al actualizar la contraseña."
+
+
 def is_google_oauth_enabled() -> bool:
     """Consulta `/auth/v1/settings` (cacheado 5 min) para saber si Google OAuth está activo."""
     if not is_cloud_auth_enabled():
