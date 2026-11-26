@@ -13,6 +13,7 @@ from __future__ import annotations
 import html as _html
 import streamlit as st
 from services.auth_service import (
+    complete_oauth_from_pkce_code,
     complete_oauth_from_tokens,
     get_google_oauth_url,
     send_password_reset,
@@ -23,11 +24,42 @@ from services.auth_service import (
 
 def _procesar_callback_oauth() -> None:
     """
-    Si el usuario vuelve de Google OAuth:
-    1) Puente JS mínimo para convertir el fragmento `#access_token=...` en query params temporales.
-    2) Validación inmediata del token contra Supabase `/auth/v1/user` y limpieza inmediata de la URL.
+    Procesa la vuelta desde Google OAuth:
+    1) Flujo principal PKCE S256 (`?code=...&oauth_s=...`): intercambio seguro servidor-a-servidor.
+    2) Fallback implícito (`?auth_at=...` / `#access_token=...`) para entornos locales.
     """
     qp = st.query_params
+
+    # 1. Callback PKCE (compatible con iframe de Streamlit Community Cloud)
+    pkce_code = qp.get("code")
+    oauth_s = qp.get("oauth_s")
+    if pkce_code and oauth_s:
+        try:
+            for k in ("code", "oauth_s", "error", "error_description"):
+                if k in st.query_params:
+                    del st.query_params[k]
+        except Exception:
+            pass
+        ok, msg = complete_oauth_from_pkce_code(str(pkce_code), str(oauth_s))
+        if ok:
+            st.rerun()
+        else:
+            st.session_state["_auth_flash_error"] = msg
+        return
+
+    # Error devuelto por proveedor OAuth
+    oauth_err = qp.get("error_description") or qp.get("error")
+    if oauth_err:
+        try:
+            for k in ("error", "error_description", "error_code", "oauth_s"):
+                if k in st.query_params:
+                    del st.query_params[k]
+        except Exception:
+            pass
+        st.session_state["_auth_flash_error"] = f"Error de acceso con Google: {oauth_err}"
+        return
+
+    # 2. Fallback implícito
     at = qp.get("auth_at")
     rt = qp.get("auth_rt", "")
     exp_raw = qp.get("auth_exp", "3600")
@@ -183,7 +215,7 @@ def show_auth_gate() -> None:
         if google_url:
             st.markdown(
                 f"""
-                <a class="sl-google-btn" href="{_html.escape(google_url)}" target="_self" rel="noopener">
+                <a class="sl-google-btn" href="{_html.escape(google_url)}" target="_top" rel="noopener">
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.39 3.62v3.01h3.87c2.26-2.08 3.56-5.15 3.56-8.66z"/>
                         <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.87-3.01c-1.07.72-2.45 1.15-4.08 1.15-3.14 0-5.8-2.12-6.75-4.97H1.25v3.1A12 12 0 0 0 12 24z"/>

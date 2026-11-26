@@ -13,7 +13,10 @@ Modo dual sin romper desarrollo local ni los tests congelados:
 
 from __future__ import annotations
 
+import base64
+import hashlib
 import os
+import secrets
 import time
 from typing import Any, Optional
 from urllib.parse import urlencode
@@ -342,21 +345,104 @@ try:
     @_st_auth.cache_data(ttl=300, show_spinner=False)
     def _check_google_provider_cached(base_url: str, anon_key: str) -> bool:
         return _fetch_google_provider(base_url, anon_key)
+
+    @_st_auth.cache_resource
+    def _get_pkce_store() -> dict[str, tuple[str, float]]:
+        return {}
 except Exception:
+    _FALLBACK_PKCE_STORE: dict[str, tuple[str, float]] = {}
+
     def _check_google_provider_cached(base_url: str, anon_key: str) -> bool:
         return _fetch_google_provider(base_url, anon_key)
 
+    def _get_pkce_store() -> dict[str, tuple[str, float]]:
+        return _FALLBACK_PKCE_STORE
+
+
+def _limpiar_pkce_expirados(store: dict[str, tuple[str, float]]) -> None:
+    ahora = time.time()
+    expirados = [k for k, (_, exp) in list(store.items()) if exp < ahora]
+    for k in expirados:
+        store.pop(k, None)
+
 
 def get_google_oauth_url() -> str:
-    """Construye la URL de autorización OAuth de Google gestionada por Supabase."""
+    """
+    Construye la URL de autorización OAuth de Google con PKCE S256 (RFC 7636).
+    Usa `?oauth_s=...` + `?code=...` (compatible con el iframe de Streamlit Cloud
+    sin exponer tokens en la URL ni depender de fragmentos #hash).
+    """
     base = get_supabase_url()
     if not base or not is_google_oauth_enabled():
         return ""
+
+    store = _get_pkce_store()
+    _limpiar_pkce_expirados(store)
+
+    # Reutilizar verifier de esta sesión de Streamlit si sigue vigente
+    state_id = None
+    verifier = None
+    try:
+        import streamlit as st
+        st_prev = st.session_state.get("_sl_pkce_state")
+        if st_prev and st_prev in store and store[st_prev][1] > time.time() + 60:
+            state_id = st_prev
+            verifier = store[st_prev][0]
+    except Exception:
+        pass
+
+    if not state_id or not verifier:
+        state_id = secrets.token_urlsafe(16)
+        verifier = secrets.token_urlsafe(48)
+        store[state_id] = (verifier, time.time() + 600)
+        try:
+            import streamlit as st
+            st.session_state["_sl_pkce_state"] = state_id
+        except Exception:
+            pass
+
+    digest = hashlib.sha256(verifier.encode("ascii")).digest()
+    challenge = base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
+    redirect_url = f"{get_app_public_url()}/?oauth_s={state_id}"
+
     params = urlencode({
         "provider": "google",
-        "redirect_to": get_app_public_url(),
+        "redirect_to": redirect_url,
+        "code_challenge": challenge,
+        "code_challenge_method": "s256",
     })
     return f"{base}/auth/v1/authorize?{params}"
+
+
+def complete_oauth_from_pkce_code(auth_code: str, state_id: str) -> tuple[bool, str]:
+    """Intercambia un código PKCE (`?code=...`) servidor-a-servidor contra Supabase."""
+    if not is_cloud_auth_enabled() or not auth_code or not state_id:
+        return False, "Parámetros de autorización OAuth incompletos."
+
+    store = _get_pkce_store()
+    _limpiar_pkce_expirados(store)
+    entry = store.pop(state_id, None)
+    if not entry:
+        return False, "La solicitud de acceso con Google ha expirado. Vuelve a pulsar «Continuar con Google»."
+
+    verifier, _ = entry
+    try:
+        resp = requests.post(
+            f"{get_supabase_url()}/auth/v1/token?grant_type=pkce",
+            headers=_auth_headers(),
+            json={"auth_code": auth_code, "code_verifier": verifier},
+            timeout=_HTTP_TIMEOUT,
+        )
+        data = resp.json() if resp.content else {}
+        if resp.status_code == 200:
+            sesion = _construir_sesion_usuario(data)
+            if sesion:
+                _guardar_sesion_en_estado(sesion)
+                return True, "Sesión iniciada con Google."
+            return False, "Respuesta de sesión incompleta tras validar con Google."
+        return False, _traducir_error_auth(data, "No se pudo completar el acceso con Google.")
+    except requests.RequestException:
+        return False, "Error de conexión al validar el acceso con Google."
 
 
 def complete_oauth_from_tokens(access_token: str, refresh_token: str = "", expires_in: int = 3600) -> tuple[bool, str]:
