@@ -386,19 +386,23 @@ def _resolver_transporte() -> tuple[str, dict[str, Any]]:
       1) SMTP (Gmail App Password, Brevo SMTP o cualquier servidor SMTP) si SMTP_USER y SMTP_PASSWORD existen.
       2) Resend API si RESEND_API_KEY existe.
     """
-    smtp_user = _env("SMTP_USER")
-    smtp_pass = _env("SMTP_PASSWORD")
-    if smtp_user and smtp_pass:
+    smtp_user_raw = _env("SMTP_USER")
+    smtp_pass_raw = _env("SMTP_PASSWORD")
+    if smtp_user_raw and smtp_pass_raw:
+        # Limpia posibles formatos "Nombre <correo@gmail.com>" y espacios accidentales en SMTP_USER
+        _, parsed_user = parseaddr(smtp_user_raw)
+        smtp_user = (parsed_user or smtp_user_raw).strip()
+
         smtp_host = _env("SMTP_HOST", "smtp.gmail.com")
-        port_default = "465" if "gmail.com" in smtp_host.lower() else "587"
+        is_gmail = "gmail.com" in smtp_host.lower()
+        port_default = "587" if is_gmail else "587"
         try:
             smtp_port = int(_env("SMTP_PORT", port_default))
         except ValueError:
             smtp_port = int(port_default)
 
-        # En Google App Passwords, los espacios visuales ("xxxx xxxx xxxx xxxx") no forman parte de la clave
-        if "gmail.com" in smtp_host.lower():
-            smtp_pass = smtp_pass.replace(" ", "")
+        # En Google App Passwords elimina cualquier espacio Unicode (\u00a0, tab, salto de línea, etc.)
+        smtp_pass = "".join(smtp_pass_raw.split()) if is_gmail else smtp_pass_raw.strip()
 
         # Remitente: evita heredar `onboarding@resend.dev` al pasar a SMTP
         smtp_from = _env("SMTP_FROM")
@@ -415,6 +419,7 @@ def _resolver_transporte() -> tuple[str, dict[str, Any]]:
             "user": smtp_user,
             "password": smtp_pass,
             "from_email": smtp_from,
+            "is_gmail": is_gmail,
         }
 
     resend_key = _env("RESEND_API_KEY")
@@ -455,19 +460,34 @@ def _enviar_smtp(
 
     host = str(cfg["host"])
     port = int(cfg["port"])
+    user = str(cfg["user"])
+    password = str(cfg["password"])
     context = ssl.create_default_context()
 
-    if port == 465:
-        with smtplib.SMTP_SSL(host, port, timeout=_HTTP_TIMEOUT, context=context) as server:
-            server.login(str(cfg["user"]), str(cfg["password"]))
-            server.sendmail(addr, [to_email], msg.as_string())
-    else:
-        with smtplib.SMTP(host, port, timeout=_HTTP_TIMEOUT) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
-            server.login(str(cfg["user"]), str(cfg["password"]))
-            server.sendmail(addr, [to_email], msg.as_string())
+    def _try_port(p: int) -> None:
+        if p == 465:
+            with smtplib.SMTP_SSL(host, p, timeout=_HTTP_TIMEOUT, context=context) as server:
+                server.ehlo()
+                server.login(user, password)
+                server.sendmail(addr, [to_email], msg.as_string())
+        else:
+            with smtplib.SMTP(host, p, timeout=_HTTP_TIMEOUT) as server:
+                server.ehlo()
+                server.starttls(context=context)
+                server.ehlo()
+                server.login(user, password)
+                server.sendmail(addr, [to_email], msg.as_string())
+
+    try:
+        _try_port(port)
+    except (smtplib.SMTPServerDisconnected, OSError) as exc:
+        # En runners cloud (GitHub Actions/Azure), si un puerto (587 o 465) cierra la sesión, reintentar el alternativo
+        alt_port = 465 if port == 587 else (587 if port == 465 else None)
+        if alt_port and cfg.get("is_gmail"):
+            print(f"[WARN] SMTP {host}:{port} desconectado ({exc}); reintentando por puerto {alt_port}...")
+            _try_port(alt_port)
+        else:
+            raise
 
 
 def _enviar_resend(cfg: dict[str, Any], to_email: str, subject: str, html_body: str, text_body: str) -> None:
@@ -525,7 +545,12 @@ def main() -> int:
     modo_mail, mail_cfg = _resolver_transporte()
 
     if modo_mail == "smtp":
-        print(f"[INFO] Transporte de correo: SMTP ({mail_cfg['host']}:{mail_cfg['port']}) | Remitente: {mail_cfg['from_email']}")
+        p_len = len(str(mail_cfg.get("password") or ""))
+        u_ok = "@" in str(mail_cfg.get("user") or "")
+        print(
+            f"[INFO] Transporte de correo: SMTP ({mail_cfg['host']}:{mail_cfg['port']}) "
+            f"| Remitente: {mail_cfg['from_email']} | user_email_ok={u_ok} | pass_len={p_len}"
+        )
     elif modo_mail == "resend":
         print(f"[INFO] Transporte de correo: Resend API | Remitente: {mail_cfg['from_email']}")
     else:
