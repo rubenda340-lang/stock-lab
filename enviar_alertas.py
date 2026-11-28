@@ -16,9 +16,18 @@ o manualmente en modo prueba (`--dry-run`):
 Variables de entorno requeridas (GitHub Actions Secrets o .env):
   - SUPABASE_URL
   - SUPABASE_SERVICE_ROLE_KEY
-  - RESEND_API_KEY
-  - ALERT_FROM_EMAIL   (ej. "StockLab Alertas <alertas@tudominio.com>")
-  - APP_PUBLIC_URL     (ej. "https://stocklab.streamlit.app")
+  - APP_PUBLIC_URL     (ej. "https://stocklab-terminal.streamlit.app")
+
+  Transporte de correo (elige UNO; si hay SMTP configurado tiene prioridad):
+  Opción A — SMTP gratuito multiusuario (0 €/mes a CUALQUIER destinatario, sin dominio):
+    - SMTP_USER        (ej. "alertas.stocklab@gmail.com" o login SMTP de Brevo)
+    - SMTP_PASSWORD    (Contraseña de aplicación de Google de 16 caracteres o clave SMTP de Brevo)
+    - SMTP_HOST        (opcional; por defecto "smtp.gmail.com"; en Brevo: "smtp-relay.brevo.com")
+    - SMTP_PORT        (opcional; por defecto "465" en Gmail SSL o "587" STARTTLS)
+    - SMTP_FROM        (opcional; ej. "StockLab Alertas <alertas.stocklab@gmail.com>")
+  Opción B — Resend API (fallback o con dominio propio verificado):
+    - RESEND_API_KEY
+    - ALERT_FROM_EMAIL (ej. "StockLab Alertas <alertas@tudominio.com>")
 """
 
 from __future__ import annotations
@@ -26,8 +35,13 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import datetime as dt
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formataddr, formatdate, make_msgid, parseaddr
 import html as _html
 import os
+import smtplib
+import ssl
 import sys
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -297,10 +311,15 @@ def _render_email_html(nombre: str, avisos: list[dict], app_url: str, es_resumen
             f'{_html.escape(a["detalle"])}</div>'
             f'</div>'
         )
+    n_av = len(avisos)
     subtitulo = (
-        "Resumen diario del estado de tus inversiones al cierre de mercado."
+        "aquí tienes el resumen diario del estado de tus inversiones al cierre de mercado."
         if es_resumen
-        else f"Hemos detectado {len(avisos)} aviso(s) importante(s) en tu terminal privado."
+        else (
+            "hemos detectado 1 aviso importante en tu terminal privado."
+            if n_av == 1
+            else f"hemos detectado {n_av} avisos importantes en tu terminal privado."
+        )
     )
     return f"""<!DOCTYPE html>
 <html>
@@ -329,15 +348,138 @@ def _render_email_html(nombre: str, avisos: list[dict], app_url: str, es_resumen
 </html>"""
 
 
-def _enviar_resend(api_key: str, from_email: str, to_email: str, subject: str, html_body: str) -> None:
+def _render_email_text(nombre: str, avisos: list[dict], app_url: str, es_resumen: bool = False) -> str:
+    """Versión en texto plano (mejora entregabilidad anti-spam en Gmail/Outlook/iCloud)."""
+    n_av = len(avisos)
+    encabezado = (
+        "aquí tienes el resumen diario del estado de tus inversiones al cierre de mercado."
+        if es_resumen
+        else (
+            "hemos detectado 1 aviso importante en tu terminal privado."
+            if n_av == 1
+            else f"hemos detectado {n_av} avisos importantes en tu terminal privado."
+        )
+    )
+    lineas = [
+        "StockLab — INVESTMENT TERMINAL · ALERTAS",
+        "",
+        f"Hola {nombre or 'inversor'}, {encabezado}",
+        "",
+    ]
+    for a in avisos:
+        lineas.append(f"[{a.get('bloque', 'Aviso')}] {a.get('titulo', '')}")
+        if a.get("detalle"):
+            lineas.append(f"  {a['detalle']}")
+        lineas.append("")
+    lineas.extend([
+        f"Abrir mi StockLab: {app_url}",
+        "",
+        "Puedes modificar o desactivar estos avisos desde Cuenta -> Alertas Automáticas.",
+        "Aviso informativo: este correo no constituye asesoramiento financiero ni recomendación de inversión.",
+    ])
+    return "\n".join(lineas)
+
+
+def _resolver_transporte() -> tuple[str, dict[str, Any]]:
+    """
+    Resuelve el proveedor de envío activo:
+      1) SMTP (Gmail App Password, Brevo SMTP o cualquier servidor SMTP) si SMTP_USER y SMTP_PASSWORD existen.
+      2) Resend API si RESEND_API_KEY existe.
+    """
+    smtp_user = _env("SMTP_USER")
+    smtp_pass = _env("SMTP_PASSWORD")
+    if smtp_user and smtp_pass:
+        smtp_host = _env("SMTP_HOST", "smtp.gmail.com")
+        port_default = "465" if "gmail.com" in smtp_host.lower() else "587"
+        try:
+            smtp_port = int(_env("SMTP_PORT", port_default))
+        except ValueError:
+            smtp_port = int(port_default)
+
+        # En Google App Passwords, los espacios visuales ("xxxx xxxx xxxx xxxx") no forman parte de la clave
+        if "gmail.com" in smtp_host.lower():
+            smtp_pass = smtp_pass.replace(" ", "")
+
+        # Remitente: evita heredar `onboarding@resend.dev` al pasar a SMTP
+        smtp_from = _env("SMTP_FROM")
+        if not smtp_from:
+            alert_from = _env("ALERT_FROM_EMAIL")
+            if alert_from and "onboarding@resend.dev" not in alert_from.lower():
+                smtp_from = alert_from
+            else:
+                smtp_from = formataddr(("StockLab Alertas", smtp_user))
+
+        return "smtp", {
+            "host": smtp_host,
+            "port": smtp_port,
+            "user": smtp_user,
+            "password": smtp_pass,
+            "from_email": smtp_from,
+        }
+
+    resend_key = _env("RESEND_API_KEY")
+    if resend_key:
+        return "resend", {
+            "api_key": resend_key,
+            "from_email": _env("ALERT_FROM_EMAIL", "StockLab Alertas <onboarding@resend.dev>"),
+        }
+
+    return "none", {}
+
+
+def _enviar_smtp(
+    cfg: dict[str, Any],
+    to_email: str,
+    subject: str,
+    html_body: str,
+    text_body: str,
+) -> None:
+    """Envía un correo multipart (texto + HTML) vía SMTP SSL (465) o STARTTLS (587)."""
+    from_raw = str(cfg["from_email"])
+    disp_name, addr = parseaddr(from_raw)
+    if not addr:
+        addr = str(cfg["user"])
+        disp_name = disp_name or "StockLab Alertas"
+    from_header = formataddr((disp_name or "StockLab Alertas", addr))
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = from_header
+    msg["To"] = to_email
+    msg["Date"] = formatdate(localtime=True)
+    dom = addr.split("@", 1)[1] if "@" in addr else "stocklab.local"
+    msg["Message-ID"] = make_msgid(domain=dom)
+
+    msg.attach(MIMEText(text_body, "plain", "utf-8"))
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+    host = str(cfg["host"])
+    port = int(cfg["port"])
+    context = ssl.create_default_context()
+
+    if port == 465:
+        with smtplib.SMTP_SSL(host, port, timeout=_HTTP_TIMEOUT, context=context) as server:
+            server.login(str(cfg["user"]), str(cfg["password"]))
+            server.sendmail(addr, [to_email], msg.as_string())
+    else:
+        with smtplib.SMTP(host, port, timeout=_HTTP_TIMEOUT) as server:
+            server.ehlo()
+            server.starttls(context=context)
+            server.ehlo()
+            server.login(str(cfg["user"]), str(cfg["password"]))
+            server.sendmail(addr, [to_email], msg.as_string())
+
+
+def _enviar_resend(cfg: dict[str, Any], to_email: str, subject: str, html_body: str, text_body: str) -> None:
     resp = requests.post(
         "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {cfg['api_key']}", "Content-Type": "application/json"},
         json={
-            "from": from_email,
+            "from": cfg["from_email"],
             "to": [to_email],
             "subject": subject,
             "html": html_body,
+            "text": text_body,
         },
         timeout=_HTTP_TIMEOUT,
     )
@@ -345,12 +487,29 @@ def _enviar_resend(api_key: str, from_email: str, to_email: str, subject: str, h
         raise RuntimeError(f"Resend HTTP {resp.status_code}: {resp.text[:300]}")
 
 
+def _enviar_correo(
+    modo: str,
+    cfg: dict[str, Any],
+    to_email: str,
+    subject: str,
+    html_body: str,
+    text_body: str,
+) -> None:
+    if modo == "smtp":
+        _enviar_smtp(cfg, to_email, subject, html_body, text_body)
+    elif modo == "resend":
+        _enviar_resend(cfg, to_email, subject, html_body, text_body)
+    else:
+        raise RuntimeError("No hay transporte de correo configurado (SMTP_USER/SMTP_PASSWORD ni RESEND_API_KEY).")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Motor 24/7 de alertas por correo de StockLab.")
     parser.add_argument("--dry-run", action="store_true", help="Evalúa y muestra avisos sin enviar correos ni escribir log")
     parser.add_argument("--force", action="store_true", help="Ignora la ventana de horario BME (útil para pruebas)")
     parser.add_argument("--resumen-diario", action="store_true", help="Envía resumen diario al cierre BME")
-    parser.add_argument("--test-email", action="store_true", help="Envía un correo de prueba de conectividad a los usuarios activos sin escribir en el log anti-spam")
+    parser.add_argument("--test-email", action="store_true", help="Envía un correo de prueba de conectividad sin escribir en el log anti-spam")
+    parser.add_argument("--to-email", default="", help="Destinatario concreto opcional para usar con --test-email")
     args = parser.parse_args()
 
     ahora_mad = dt.datetime.now(_MADRID_TZ)
@@ -362,9 +521,45 @@ def main() -> int:
 
     sb_url = _env("SUPABASE_URL").rstrip("/")
     sb_key = _env("SUPABASE_SERVICE_ROLE_KEY")
-    resend_key = _env("RESEND_API_KEY")
-    from_email = _env("ALERT_FROM_EMAIL", "StockLab Alertas <onboarding@resend.dev>")
-    app_url = _env("APP_PUBLIC_URL", "https://stocklab.streamlit.app")
+    app_url = _env("APP_PUBLIC_URL", "https://stocklab-terminal.streamlit.app")
+    modo_mail, mail_cfg = _resolver_transporte()
+
+    if modo_mail == "smtp":
+        print(f"[INFO] Transporte de correo: SMTP ({mail_cfg['host']}:{mail_cfg['port']}) | Remitente: {mail_cfg['from_email']}")
+    elif modo_mail == "resend":
+        print(f"[INFO] Transporte de correo: Resend API | Remitente: {mail_cfg['from_email']}")
+    else:
+        print("[WARN] Sin transporte de correo configurado (define SMTP_USER+SMTP_PASSWORD o RESEND_API_KEY).")
+
+    # Prueba directa a un destinatario concreto (útil para verificar envío multiusuario a cualquier correo)
+    target_direct = (args.to_email or "").strip()
+    if args.test_email and target_direct:
+        if "@" not in target_direct:
+            print(f"[ERROR] Dirección de prueba inválida: {target_direct}")
+            return 1
+        avisos_test = [{
+            "ticker": "TEST",
+            "tipo_alerta": "test",
+            "bloque": "Prueba Multiusuario · Sistema Activo",
+            "nivel": "positiva",
+            "titulo": "Alertas automáticas de StockLab conectadas correctamente",
+            "detalle": (
+                f"Envío verificado mediante {modo_mail.upper()} hacia cualquier destinatario. "
+                "El motor 24/7 de StockLab está listo para todos los usuarios."
+            ),
+        }]
+        subject = f"StockLab · Confirmación de alertas multiusuario ({hoy_iso})"
+        html_body = _render_email_html("inversor", avisos_test, app_url, es_resumen=False)
+        text_body = _render_email_text("inversor", avisos_test, app_url, es_resumen=False)
+        if args.dry_run:
+            print(f"[DRY-RUN] -> {target_direct} | {subject}")
+            return 0
+        if modo_mail == "none":
+            print("[ERROR] Falta configurar SMTP_USER/SMTP_PASSWORD o RESEND_API_KEY.")
+            return 1
+        _enviar_correo(modo_mail, mail_cfg, target_direct, subject, html_body, text_body)
+        print(f"[SENT] {target_direct} | {subject}")
+        return 0
 
     if not sb_url or not sb_key:
         print("[SKIP] Faltan SUPABASE_URL y/o SUPABASE_SERVICE_ROLE_KEY.")
@@ -427,6 +622,7 @@ def main() -> int:
             }]
             subject = f"StockLab · Confirmación de alertas activas ({hoy_iso})"
             html_body = _render_email_html(prof.get("full_name", ""), avisos_test, app_url, es_resumen=False)
+            text_body = _render_email_text(prof.get("full_name", ""), avisos_test, app_url, es_resumen=False)
             log_rows = []
         elif args.resumen_diario:
             if not pref.get("resumen_diario"):
@@ -445,6 +641,7 @@ def main() -> int:
                 }]
             subject = f"StockLab · Resumen de cierre ({hoy_iso})"
             html_body = _render_email_html(prof.get("full_name", ""), avisos_raw, app_url, es_resumen=True)
+            text_body = _render_email_text(prof.get("full_name", ""), avisos_raw, app_url, es_resumen=True)
             log_rows = [{"user_id": uid, "ticker": "RESUMEN", "tipo_alerta": "resumen_diario", "fecha_dia": hoy_iso, "detalle": subject}]
         else:
             avisos_all = _evaluar_alertas_usuario(pref, wl_u, cart_u, precios)
@@ -460,6 +657,7 @@ def main() -> int:
                 else f"StockLab · {len(avisos_nuevos)} alertas en tu cartera/watchlist"
             )
             html_body = _render_email_html(prof.get("full_name", ""), avisos_nuevos, app_url, es_resumen=False)
+            text_body = _render_email_text(prof.get("full_name", ""), avisos_nuevos, app_url, es_resumen=False)
             log_rows = [
                 {
                     "user_id": uid,
@@ -475,15 +673,15 @@ def main() -> int:
             print(f"[DRY-RUN] -> {to_email} | {subject} ({len(log_rows)} aviso(s))")
             continue
 
-        if not resend_key:
-            print(f"[WARN] Falta RESEND_API_KEY; omitiendo envío a {to_email}.")
+        if modo_mail == "none":
+            print(f"[WARN] Falta transporte de correo (SMTP_USER/SMTP_PASSWORD o RESEND_API_KEY); omitiendo envío a {to_email}.")
             continue
 
         try:
-            _enviar_resend(resend_key, from_email, to_email, subject, html_body)
+            _enviar_correo(modo_mail, mail_cfg, to_email, subject, html_body, text_body)
             _sb_insert(sb_url, sb_key, "alertas_enviadas_log", log_rows)
             correos_enviados += 1
-            print(f"[SENT] {to_email} | {subject}")
+            print(f"[SENT] ({modo_mail.upper()}) {to_email} | {subject}")
         except Exception as e:
             print(f"[ERROR] Envío fallido a {to_email}: {e}")
 

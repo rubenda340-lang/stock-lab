@@ -19,6 +19,10 @@ on:
         description: "Enviar correo de prueba de conectividad (true/false)"
         required: false
         default: "false"
+      test_to_email:
+        description: "Correo concreto opcional para prueba multiusuario (ej. amigo@gmail.com)"
+        required: false
+        default: ""
 
 jobs:
   alertas:
@@ -40,12 +44,19 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           ALERT_FROM_EMAIL: ${{ secrets.ALERT_FROM_EMAIL }}
           APP_PUBLIC_URL: ${{ secrets.APP_PUBLIC_URL }}
+          INPUT_TEST_TO_EMAIL: ${{ github.event.inputs.test_to_email }}
         run: |
-          FLAGS=""
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then FLAGS="$FLAGS --dry-run"; fi
-          if [ "${{ github.event.inputs.force }}" = "true" ]; then FLAGS="$FLAGS --force"; fi
-          if [ "${{ github.event.inputs.test_email }}" = "true" ]; then FLAGS="$FLAGS --test-email"; fi
-          python enviar_alertas.py $FLAGS
+          ARGS=()
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then ARGS+=(--force); fi
+          if [ "${{ github.event.inputs.test_email }}" = "true" ]; then ARGS+=(--test-email); fi
+          if [ -n "$INPUT_TEST_TO_EMAIL" ]; then ARGS+=(--to-email "$INPUT_TEST_TO_EMAIL"); fi
+          python enviar_alertas.py "${ARGS[@]}"
