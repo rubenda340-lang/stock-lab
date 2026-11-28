@@ -648,7 +648,7 @@ def show_auth_gate() -> None:
                         """
                     )
 
-                tab_login, tab_signup, tab_magic = st.tabs(["Iniciar Sesión", "Crear Cuenta", "Enlace Mágico"])
+                tab_login, tab_signup, tab_magic = st.tabs(["Iniciar Sesión", "Crear Cuenta", "Enlace Directo"])
 
                 with tab_login:
                     with st.form("sl_form_login", clear_on_submit=False):

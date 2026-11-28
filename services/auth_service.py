@@ -334,11 +334,11 @@ def send_magic_link(email: str) -> tuple[bool, str]:
             timeout=_HTTP_TIMEOUT,
         )
         if resp.status_code in (200, 204):
-            return True, "Te hemos enviado un enlace mágico a tu correo. Haz clic en él para entrar directamente."
+            return True, "Te hemos enviado un enlace de acceso directo a tu correo. Haz clic en él para entrar al instante."
         data = resp.json() if resp.content else {}
-        return False, _traducir_error_auth(data, "No se pudo enviar el enlace mágico.")
+        return False, _traducir_error_auth(data, "No se pudo enviar el enlace de acceso directo.")
     except requests.RequestException:
-        return False, "Error de red al enviar el enlace mágico."
+        return False, "Error de red al enviar el enlace de acceso directo."
 
 
 def resend_confirmation_email(email: str) -> tuple[bool, str]:
