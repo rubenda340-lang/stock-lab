@@ -114,8 +114,8 @@ def mostrar_modal_cuenta() -> None:
     # ── Configuración de Alertas Automáticas por Correo ──────────────────
     st.markdown("##### Alertas Automáticas por Correo")
     st.caption(
-        "Configura cuándo quieres que StockLab te envíe avisos automáticos por correo electrónico "
-        "sobre tus observaciones de Watchlist y posiciones en cartera."
+        "Horario bursátil BME (L–V, 09:00–17:45). Agrupamos los avisos por ciclo con un máximo "
+        "de 6 correos de alerta al día por cuenta (+1 resumen diario opcional al cierre)."
     )
 
     prefs = obtener_preferencias_alertas()
@@ -141,7 +141,7 @@ def mostrar_modal_cuenta() -> None:
             )
             wl_cerca = st.checkbox(
                 "Avisar cuando se acerque al precio objetivo",
-                value=bool(prefs.get("avisar_wl_cerca", True)),
+                value=bool(prefs.get("avisar_wl_cerca", False)),
                 disabled=not email_activo,
             )
             umbral_cerca = st.number_input(
@@ -186,7 +186,7 @@ def mostrar_modal_cuenta() -> None:
                 min_value=1.0,
                 max_value=50.0,
                 step=0.5,
-                value=float(prefs.get("umbral_intradia_pct", 4.0)),
+                value=float(prefs.get("umbral_intradia_pct", 5.0)),
                 disabled=not (email_activo and (av_real or av_sim)),
             )
 

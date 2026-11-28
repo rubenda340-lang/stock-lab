@@ -24,13 +24,13 @@ DEFAULT_PREFERENCIAS_ALERTAS: dict[str, Any] = {
     "email_activo": True,
     "email_destino": "",
     "avisar_wl_alcanzado": True,
-    "avisar_wl_cerca": True,
+    "avisar_wl_cerca": False,
     "umbral_wl_cerca_pct": 3.0,
     "avisar_cartera_real": True,
     "avisar_cartera_simulada": False,
     "umbral_ganancia_pct": 15.0,
     "umbral_perdida_pct": -8.0,
-    "umbral_intradia_pct": 4.0,
+    "umbral_intradia_pct": 5.0,
     "resumen_diario": False,
 }
 
@@ -66,7 +66,7 @@ def _normalizar_prefs(raw: dict | None, email_default: str = "") -> dict[str, An
     out["umbral_wl_cerca_pct"] = _clamp(raw.get("umbral_wl_cerca_pct"), 0.5, 25.0, 3.0)
     out["umbral_ganancia_pct"] = _clamp(raw.get("umbral_ganancia_pct"), 1.0, 500.0, 15.0)
     out["umbral_perdida_pct"] = _clamp(raw.get("umbral_perdida_pct"), -95.0, -1.0, -8.0)
-    out["umbral_intradia_pct"] = _clamp(raw.get("umbral_intradia_pct"), 1.0, 50.0, 4.0)
+    out["umbral_intradia_pct"] = _clamp(raw.get("umbral_intradia_pct"), 1.0, 50.0, 5.0)
     return out
 
 

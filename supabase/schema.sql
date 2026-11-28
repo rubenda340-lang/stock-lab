@@ -92,13 +92,13 @@ CREATE TABLE IF NOT EXISTS public.preferencias_alertas (
     email_activo             BOOLEAN NOT NULL DEFAULT TRUE,
     email_destino            TEXT,
     avisar_wl_alcanzado      BOOLEAN NOT NULL DEFAULT TRUE,
-    avisar_wl_cerca          BOOLEAN NOT NULL DEFAULT TRUE,
+    avisar_wl_cerca          BOOLEAN NOT NULL DEFAULT FALSE,
     umbral_wl_cerca_pct      DOUBLE PRECISION NOT NULL DEFAULT 3.0 CHECK (umbral_wl_cerca_pct BETWEEN 0.5 AND 25.0),
     avisar_cartera_real      BOOLEAN NOT NULL DEFAULT TRUE,
     avisar_cartera_simulada  BOOLEAN NOT NULL DEFAULT FALSE,
     umbral_ganancia_pct      DOUBLE PRECISION NOT NULL DEFAULT 15.0 CHECK (umbral_ganancia_pct BETWEEN 1.0 AND 500.0),
     umbral_perdida_pct       DOUBLE PRECISION NOT NULL DEFAULT -8.0 CHECK (umbral_perdida_pct BETWEEN -95.0 AND -1.0),
-    umbral_intradia_pct      DOUBLE PRECISION NOT NULL DEFAULT 4.0 CHECK (umbral_intradia_pct BETWEEN 1.0 AND 50.0),
+    umbral_intradia_pct      DOUBLE PRECISION NOT NULL DEFAULT 5.0 CHECK (umbral_intradia_pct BETWEEN 1.0 AND 50.0),
     resumen_diario           BOOLEAN NOT NULL DEFAULT FALSE,
     updated_at               TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

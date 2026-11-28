@@ -40,6 +40,7 @@ from email.mime.text import MIMEText
 from email.utils import formataddr, formatdate, make_msgid, parseaddr
 import html as _html
 import os
+import re
 import smtplib
 import ssl
 import sys
@@ -53,6 +54,21 @@ load_dotenv()
 
 _MADRID_TZ = ZoneInfo("Europe/Madrid")
 _HTTP_TIMEOUT = 15
+
+# Cuotas de protección de reputación y servicio multiusuario (Gmail gratuito = 500/día)
+# 6 correos de alerta + 1 resumen de cierre = máx. 7 correos/día por cuenta -> 420/7 = 60 cuentas al 100%
+_DEFAULT_MAX_ALERT_EMAILS_USER_DAY = 6
+_DEFAULT_MAX_EMAILS_GLOBAL_DAY = 420
+_CRITICAL_ALERT_TYPES = {
+    "wl_ruptura_alcanzada",
+    "wl_caida_alcanzada",
+    "cart_real_perdida",
+    "cart_simulada_perdida",
+    "cart_real_ganancia",
+    "cart_simulada_ganancia",
+    "cart_real_intradia_dn",
+    "cart_simulada_intradia_dn",
+}
 
 
 def _env(clave: str, default: str = "") -> str:
@@ -295,6 +311,41 @@ def _evaluar_alertas_usuario(
     return avisos
 
 
+def _proteger_tickers_html(texto: str) -> str:
+    """Escapa HTML y evita que Gmail convierta tickers `.MC` (Mónaco) en enlaces azules subrayados."""
+    escapado = _html.escape(texto)
+    return re.sub(r"\.MC\b", "&#8203;.MC", escapado)
+
+
+def _contar_cuotas_hoy(sent_today: list[dict]) -> tuple[dict[str, int], int]:
+    """
+    Cuenta correos reales enviados hoy agrupando por timestamp `enviado_at` (una inserción por correo).
+    Devuelve:
+      - user_alert_counts: nº de correos de alerta (excl. resumen_diario) enviados hoy por cada user_id.
+      - global_emails_today: nº total de correos enviados hoy entre todos los usuarios (alertas + resumen).
+    """
+    user_alert_batches: dict[str, set[str]] = {}
+    global_batches: set[tuple[str, str]] = set()
+    for idx, row in enumerate(sent_today):
+        uid = str(row.get("user_id") or "")
+        if not uid:
+            continue
+        ts = str(row.get("enviado_at") or f"row-{idx}")
+        global_batches.add((uid, ts))
+        if str(row.get("tipo_alerta") or "") != "resumen_diario":
+            user_alert_batches.setdefault(uid, set()).add(ts)
+    user_counts = {u: len(b) for u, b in user_alert_batches.items()}
+    return user_counts, len(global_batches)
+
+
+def _es_alerta_prioritaria(aviso: dict) -> bool:
+    """True para alertas críticas u objetivos alcanzados (reservadas para el último cupo diario)."""
+    return (
+        str(aviso.get("tipo_alerta") or "") in _CRITICAL_ALERT_TYPES
+        or str(aviso.get("nivel") or "") == "critica"
+    )
+
+
 def _render_email_html(nombre: str, avisos: list[dict], app_url: str, es_resumen: bool = False) -> str:
     color_map = {"positiva": "#34d399", "critica": "#f87171", "aviso": "#fbbf24"}
     bloques_html = []
@@ -306,9 +357,9 @@ def _render_email_html(nombre: str, avisos: list[dict], app_url: str, es_resumen
             f'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;'
             f'color:{col};margin-bottom:4px;">{_html.escape(a["bloque"])}</div>'
             f'<div style="font-size:15px;font-weight:700;color:#f8fafc;margin-bottom:4px;">'
-            f'{_html.escape(a["titulo"])}</div>'
+            f'{_proteger_tickers_html(a["titulo"])}</div>'
             f'<div style="font-size:13px;color:#cbd5e1;line-height:1.5;">'
-            f'{_html.escape(a["detalle"])}</div>'
+            f'{_proteger_tickers_html(a["detalle"])}</div>'
             f'</div>'
         )
     n_av = len(avisos)
@@ -322,12 +373,13 @@ def _render_email_html(nombre: str, avisos: list[dict], app_url: str, es_resumen
         )
     )
     return f"""<!DOCTYPE html>
-<html>
+<html lang="es">
+<head><meta charset="utf-8"></head>
 <body style="margin:0;padding:24px;background:#080c15;font-family:Inter,Segoe UI,Arial,sans-serif;color:#eef2f8;">
   <div style="max-width:600px;margin:0 auto;background:#0f1726;border:1px solid #1e293b;border-radius:16px;padding:28px;">
     <div style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.03em;">StockLab</div>
     <div style="font-size:12px;color:#38bdf8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;">
-      INVESTMENT TERMINAL · ALERTAS
+      TERMINAL DE INVERSIÓN · ALERTAS
     </div>
     <p style="font-size:14px;color:#cbd5e1;margin:0 0 18px 0;">
       Hola {_html.escape(nombre or 'inversor')}, {subtitulo}
@@ -361,7 +413,7 @@ def _render_email_text(nombre: str, avisos: list[dict], app_url: str, es_resumen
         )
     )
     lineas = [
-        "StockLab — INVESTMENT TERMINAL · ALERTAS",
+        "StockLab — TERMINAL DE INVERSIÓN · ALERTAS",
         "",
         f"Hola {nombre or 'inversor'}, {encabezado}",
         "",
@@ -603,12 +655,22 @@ def main() -> int:
     all_cart = _sb_get(sb_url, sb_key, "cartera", {"select": "*"})
     sent_today = _sb_get(
         sb_url, sb_key, "alertas_enviadas_log",
-        {"fecha_dia": f"eq.{hoy_iso}", "select": "user_id,ticker,tipo_alerta"},
+        {"fecha_dia": f"eq.{hoy_iso}", "select": "user_id,ticker,tipo_alerta,enviado_at"},
     )
     enviados_set = {
         (r["user_id"], str(r["ticker"]).upper(), str(r["tipo_alerta"]))
         for r in sent_today
     }
+    user_alert_counts, global_sent_today = _contar_cuotas_hoy(sent_today)
+
+    try:
+        max_user_day = max(1, int(_env("MAX_ALERT_EMAILS_USER_DAY", str(_DEFAULT_MAX_ALERT_EMAILS_USER_DAY))))
+    except ValueError:
+        max_user_day = _DEFAULT_MAX_ALERT_EMAILS_USER_DAY
+    try:
+        max_global_day = max(1, int(_env("MAX_EMAILS_GLOBAL_DAY", str(_DEFAULT_MAX_EMAILS_GLOBAL_DAY))))
+    except ValueError:
+        max_global_day = _DEFAULT_MAX_EMAILS_GLOBAL_DAY
 
     # Unir todos los tickers necesarios y descargar precios 1 única vez
     tickers_unicos: set[str] = set()
@@ -620,10 +682,18 @@ def main() -> int:
             tickers_unicos.add(str(c["ticker"]).strip().upper())
 
     precios = _descargar_precios(tickers_unicos)
-    print(f"[INFO] Precios descargados: {len(precios)}/{len(tickers_unicos)} tickers | Usuarios activos: {len(prefs)}")
+    print(
+        f"[INFO] Precios descargados: {len(precios)}/{len(tickers_unicos)} tickers | "
+        f"Usuarios activos: {len(prefs)} | Cuota global hoy: {global_sent_today}/{max_global_day} "
+        f"(máx. {max_user_day} alertas + 1 resumen/usuario)"
+    )
 
     correos_enviados = 0
     for pref in prefs:
+        if not args.test_email and global_sent_today >= max_global_day:
+            print(f"[QUOTA] Techo global diario alcanzado ({global_sent_today}/{max_global_day}); deteniendo envíos hasta mañana.")
+            break
+
         uid = pref["user_id"]
         prof = profiles.get(uid, {})
         to_email = (pref.get("email_destino") or prof.get("email") or "").strip()
@@ -669,6 +739,11 @@ def main() -> int:
             text_body = _render_email_text(prof.get("full_name", ""), avisos_raw, app_url, es_resumen=True)
             log_rows = [{"user_id": uid, "ticker": "RESUMEN", "tipo_alerta": "resumen_diario", "fecha_dia": hoy_iso, "detalle": subject}]
         else:
+            usados_u = user_alert_counts.get(uid, 0)
+            if usados_u >= max_user_day:
+                print(f"[QUOTA] {to_email} alcanzó el máximo diario de alertas ({usados_u}/{max_user_day}).")
+                continue
+
             avisos_all = _evaluar_alertas_usuario(pref, wl_u, cart_u, precios)
             avisos_nuevos = [
                 a for a in avisos_all
@@ -676,6 +751,15 @@ def main() -> int:
             ]
             if not avisos_nuevos:
                 continue
+
+            # Reserva del último correo diario del usuario (el 6.º de 6) para alertas críticas u objetivos alcanzados
+            if usados_u == max_user_day - 1 and not any(_es_alerta_prioritaria(a) for a in avisos_nuevos):
+                print(
+                    f"[QUOTA] {to_email} reserva su último cupo diario ({usados_u + 1}/{max_user_day}) "
+                    "para alertas críticas u objetivos alcanzados."
+                )
+                continue
+
             subject = (
                 f"StockLab · {avisos_nuevos[0]['titulo']}"
                 if len(avisos_nuevos) == 1
@@ -706,6 +790,9 @@ def main() -> int:
             _enviar_correo(modo_mail, mail_cfg, to_email, subject, html_body, text_body)
             _sb_insert(sb_url, sb_key, "alertas_enviadas_log", log_rows)
             correos_enviados += 1
+            global_sent_today += 1
+            if not args.resumen_diario and not args.test_email:
+                user_alert_counts[uid] = user_alert_counts.get(uid, 0) + 1
             print(f"[SENT] ({modo_mail.upper()}) {to_email} | {subject}")
         except Exception as e:
             print(f"[ERROR] Envío fallido a {to_email}: {e}")
